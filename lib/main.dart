@@ -110,6 +110,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _handleText(String e) {
+    setState(() {
+      _number = e;
+    });
+  }
+
   void _inputZero() {
     setState(() {
       _number += "0";
@@ -137,9 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     Calculation calculation = new Calculation();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Dismissible(
         key: Key('key'),
         direction: DismissDirection.vertical,
@@ -168,6 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
             TextField(
               textAlign: TextAlign.center,
               enabled: true,
+              onChanged: _handleText,
               controller: TextEditingController(
                 text: '$_number',
               ),
