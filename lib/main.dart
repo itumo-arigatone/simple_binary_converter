@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -33,14 +34,24 @@ class Calculation {
   // 2 -> 16
   String ConvertBinaryToHex(binary) {
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
-    int num = int.parse(removeZero);
-    for (int i=0;i<removeZero.length;i++) {
+    List<String> numArray = removeZero.split("");
+    num deci = 0;
+    for (int i=0;i<numArray.length;i++) {
+      deci += int.parse(numArray[i]) * pow(2,(numArray.length-i-1));
     }
-    return binary;
+    deci as int;
+    return deci.toRadixString(16);
   }
   // 2 -> 10
   String ConvertBinaryToDecimal(binary) {
-    return binary;
+    String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
+    List<String> numArray = removeZero.split("");
+    num deci = 0;
+    for (int i=0;i<numArray.length;i++) {
+      deci += int.parse(numArray[i]) * pow(2,(numArray.length-i-1));
+    }
+    deci as int;
+    return deci.toRadixString(10);
   }
 
   //10 -> 2
@@ -142,11 +153,15 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         child: Column(
           children: <Widget>[
+            Padding(padding: EdgeInsets.only(bottom: 70)),
             Container(
-              height: 100,
+              height: 50,
               color: Colors.orange,
               child: Text(
                 "$_convertResult",
+                style: TextStyle(
+                  fontSize: 30,
+                  ),
               ),
             ),
             Padding(padding: EdgeInsets.only(top: 70)),
