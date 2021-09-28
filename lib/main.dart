@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
   ElevatedButton numButton(String num) {
     return ElevatedButton(
       child: buttonStyle(num),
-      onPressed: num == "0" ? _inputZero : _inputOne,
+      onPressed: () => _setNumber(num),
       style: ElevatedButton.styleFrom(
         fixedSize: Size(80, 80),
         primary: Colors.white,
@@ -118,15 +118,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _inputZero() {
+  void _setNumber(String recieveNum) {
     setState(() {
-      _number += "0";
-    });
-  }
-
-  void _inputOne() {
-    setState(() {
-      _number += "1";
+      _number += recieveNum;
     });
   }
 
@@ -205,6 +199,74 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
+                _setResult(calculation.ConvertDecimalToBinary("$_number"));
+              }
+              return;
+            },
+            child: Column(
+              children: <Widget>[
+                Padding(padding: EdgeInsets.only(bottom: 70)),
+                Container(
+                  height: 50,
+                  color: Colors.orange,
+                  child: Text(
+                    "$_convertResult",
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 70)),
+                TextField(
+                  textAlign: TextAlign.center,
+                  enabled: true,
+                  onChanged: _handleText,
+                  controller: TextEditingController(
+                    text: '$_number',
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 70)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    numButton("1"),
+                    numButton("2"),
+                    numButton("3"),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    numButton("4"),
+                    numButton("5"),
+                    numButton("6"),
+                  ],
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      numButton("7"),
+                      numButton("8"),
+                      numButton("9"),
+                    ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    numButton("0"),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        Scaffold(
+          body: Dismissible(
+            key: Key('key1'),
+            direction: DismissDirection.vertical,
+            confirmDismiss: (direction) async {
+              if (direction == DismissDirection.up) {
+                _clearNum();
+              } else {
                 _setResult(calculation.ConvertBinaryToHex("$_number"));
               }
               return;
@@ -235,10 +297,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Padding(padding: EdgeInsets.only(top: 250)),
-                      numButton("0"),
-                      numButton("1"),
-                      Padding(padding: EdgeInsets.only(left: 90)),
-                      numButton("2"),
+                      numButton("a"),
+                      numButton("b"),
+                      numButton("c"),
+                      numButton("d"),
+                      numButton("e"),
+                      numButton("f"),
                     ]),
               ],
             ),
