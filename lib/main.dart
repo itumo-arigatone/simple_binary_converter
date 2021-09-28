@@ -225,34 +225,64 @@ class _MyHomePageState extends State<MyHomePage> {
                     text: '$_number',
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 70)),
+                // Padding(padding: EdgeInsets.only(top: 70)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    numButton("1"),
-                    numButton("2"),
-                    numButton("3"),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: numButton("1"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: numButton("2"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: numButton("3"),
+                    )
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    numButton("4"),
-                    numButton("5"),
-                    numButton("6"),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: numButton("4"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: numButton("5"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: numButton("6"),
+                    ),
                   ],
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      numButton("7"),
-                      numButton("8"),
-                      numButton("9"),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: numButton("7"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: numButton("8"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: numButton("9"),
+                      ),
                     ]),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    numButton("0"),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: numButton("0"),
+                    ),
                   ],
                 ),
               ],
