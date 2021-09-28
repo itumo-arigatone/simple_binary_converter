@@ -36,19 +36,20 @@ class Calculation {
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
     List<String> numArray = removeZero.split("");
     num deci = 0;
-    for (int i=0;i<numArray.length;i++) {
-      deci += int.parse(numArray[i]) * pow(2,(numArray.length-i-1));
+    for (int i = 0; i < numArray.length; i++) {
+      deci += int.parse(numArray[i]) * pow(2, (numArray.length - i - 1));
     }
     deci as int;
     return deci.toRadixString(16);
   }
+
   // 2 -> 10
   String ConvertBinaryToDecimal(binary) {
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
     List<String> numArray = removeZero.split("");
     num deci = 0;
-    for (int i=0;i<numArray.length;i++) {
-      deci += int.parse(numArray[i]) * pow(2,(numArray.length-i-1));
+    for (int i = 0; i < numArray.length; i++) {
+      deci += int.parse(numArray[i]) * pow(2, (numArray.length - i - 1));
     }
     deci as int;
     return deci.toRadixString(10);
@@ -71,6 +72,7 @@ class Calculation {
     int num = int.parse(hex);
     return num.toRadixString(2);
   }
+
   // 16 -> 10
   String ConvertHexToDecimal(hex) {
     int num = int.parse(hex);
@@ -94,9 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
   ElevatedButton numButton(String num) {
     return ElevatedButton(
       child: buttonStyle(num),
-      onPressed: num=="0"?_inputZero:_inputOne,
+      onPressed: num == "0" ? _inputZero : _inputOne,
       style: ElevatedButton.styleFrom(
-        fixedSize: Size(80, 80), 
+        fixedSize: Size(80, 80),
         primary: Colors.white,
         onPrimary: Colors.black,
         shape: const CircleBorder(
@@ -121,6 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _number += "0";
     });
   }
+
   void _inputOne() {
     setState(() {
       _number += "1";
@@ -142,52 +145,106 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Calculation calculation = new Calculation();
-    return Scaffold(
-      body: Dismissible(
-        key: Key('key'),
-        direction: DismissDirection.vertical,
-        confirmDismiss: (direction) async {
-          if (direction == DismissDirection.up) {
-            _clearNum();
-          } else {
-            _setResult(calculation.ConvertBinaryToHex("$_number"));
-          }
-          return; 
-        },
-        child: Column(
-          children: <Widget>[
-            Padding(padding: EdgeInsets.only(bottom: 70)),
-            Container(
-              height: 50,
-              color: Colors.orange,
-              child: Text(
-                "$_convertResult",
-                style: TextStyle(
-                  fontSize: 30,
-                  ),
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(top: 70)),
-            TextField(
-              textAlign: TextAlign.center,
-              enabled: true,
-              onChanged: _handleText,
-              controller: TextEditingController(
-                text: '$_number',
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+    final PageController controller = PageController(initialPage: 0);
+
+    return PageView(
+      scrollDirection: Axis.horizontal,
+      controller: controller,
+      children: <Widget>[
+        Scaffold(
+          body: Dismissible(
+            key: Key('key'),
+            direction: DismissDirection.vertical,
+            confirmDismiss: (direction) async {
+              if (direction == DismissDirection.up) {
+                _clearNum();
+              } else {
+                _setResult(calculation.ConvertBinaryToHex("$_number"));
+              }
+              return;
+            },
+            child: Column(
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(top: 250)),
-                numButton("0"),
-                Padding(padding: EdgeInsets.only(left: 90)),
-                numButton("1"),
-              ]
+                Padding(padding: EdgeInsets.only(bottom: 70)),
+                Container(
+                  height: 50,
+                  color: Colors.orange,
+                  child: Text(
+                    "$_convertResult",
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 70)),
+                TextField(
+                  textAlign: TextAlign.center,
+                  enabled: true,
+                  onChanged: _handleText,
+                  controller: TextEditingController(
+                    text: '$_number',
+                  ),
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(padding: EdgeInsets.only(top: 250)),
+                      numButton("0"),
+                      Padding(padding: EdgeInsets.only(left: 90)),
+                      numButton("1"),
+                    ]),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Scaffold(
+          body: Dismissible(
+            key: Key('key1'),
+            direction: DismissDirection.vertical,
+            confirmDismiss: (direction) async {
+              if (direction == DismissDirection.up) {
+                _clearNum();
+              } else {
+                _setResult(calculation.ConvertBinaryToHex("$_number"));
+              }
+              return;
+            },
+            child: Column(
+              children: <Widget>[
+                Padding(padding: EdgeInsets.only(bottom: 70)),
+                Container(
+                  height: 50,
+                  color: Colors.orange,
+                  child: Text(
+                    "$_convertResult",
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 70)),
+                TextField(
+                  textAlign: TextAlign.center,
+                  enabled: true,
+                  onChanged: _handleText,
+                  controller: TextEditingController(
+                    text: '$_number',
+                  ),
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(padding: EdgeInsets.only(top: 250)),
+                      numButton("0"),
+                      numButton("1"),
+                      Padding(padding: EdgeInsets.only(left: 90)),
+                      numButton("2"),
+                    ]),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
