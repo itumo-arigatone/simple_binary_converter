@@ -228,70 +228,77 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                Expanded(
+                  child: FractionallySizedBox(
+                    widthFactor: 1.0,
+                    heightFactor: 0.72,
+                    alignment: const FractionalOffset(0.5, 0.7),
+                    child: Container(
+                      color: Colors.orange,
+                      child: Column(
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: numButton("1"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: numButton("1"),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: numButton("2"),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: numButton("3"),
+                              )
+                            ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: numButton("2"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: numButton("4"),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: numButton("5"),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: numButton("6"),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: numButton("3"),
-                          )
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: numButton("7"),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: numButton("8"),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: numButton("9"),
+                                ),
+                              ]),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: numButton("0"),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: numButton("4"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: numButton("5"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: numButton("6"),
-                          ),
-                        ],
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: numButton("7"),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: numButton("8"),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: numButton("9"),
-                            ),
-                          ]),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: numButton("0"),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],
