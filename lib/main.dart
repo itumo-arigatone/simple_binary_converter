@@ -75,8 +75,8 @@ class Calculation {
 
   // 16 -> 10
   String ConvertHexToDecimal(hex) {
-    int num = int.parse(hex);
-    return num.toRadixString(2);
+    int num = int.parse("0x" + hex);
+    return num.toRadixString(10);
   }
 }
 
@@ -318,7 +318,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
-                _setResult(calculation.ConvertBinaryToHex("$_number"));
+                _setResult(calculation.ConvertHexToDecimal("$_number"));
               }
               return;
             },
