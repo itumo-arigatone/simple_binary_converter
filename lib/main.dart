@@ -94,7 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   ElevatedButton numButton(String num) {
-    double buttonSize = MediaQuery.of(context).size.height * 0.08;
+    Size screenSize = MediaQuery.of(context).size;
+    double height = screenSize.height * 0.72;
+    double width = screenSize.width;
+    double smaller = height > width ? width : height;
+    double buttonSize = smaller * 0.1;
     return ElevatedButton(
       child: buttonStyle(num),
       onPressed: () => _setNumber(num),
@@ -105,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         shape: const CircleBorder(
           side: BorderSide(
             color: Colors.black,
-            width: 4,
+            width: 3,
             style: BorderStyle.solid,
           ),
         ),
