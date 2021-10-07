@@ -12,11 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Simple Binary',
+      title: "Simple binary converter",
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: "Simple binary converter"),
     );
   }
 }
@@ -64,12 +64,12 @@ class Calculation {
   //10->16
   String ConvertDecimalToHex(number) {
     int num = int.parse(number);
-    return num.toRadixString(2);
+    return num.toRadixString(16);
   }
 
   // 16 -> 2
   String ConvertHexToBinary(hex) {
-    int num = int.parse(hex);
+    int num = int.parse("0x" + hex);
     return num.toRadixString(2);
   }
 
@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Calculation calculation = new Calculation();
+    Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
 
     return PageView(
@@ -158,38 +158,38 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
-                _setResult(calculation.ConvertBinaryToHex("$_number"));
+                _setResult(calculation.ConvertBinaryToHex(_number));
               }
               return;
             },
             child: Column(
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(bottom: 70)),
+                const Padding(padding: EdgeInsets.only(bottom: 70)),
                 Container(
                   height: 50,
                   color: Colors.orange,
                   child: Text(
-                    "$_convertResult",
+                    _convertResult,
                     style: TextStyle(
                       fontSize: 30,
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 70)),
+                const Padding(padding: EdgeInsets.only(top: 70)),
                 TextField(
                   textAlign: TextAlign.center,
                   enabled: true,
                   onChanged: _handleText,
                   controller: TextEditingController(
-                    text: '$_number',
+                    text: _number,
                   ),
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Padding(padding: EdgeInsets.only(top: 250)),
+                      const Padding(padding: EdgeInsets.only(top: 250)),
                       numButton("0"),
-                      Padding(padding: EdgeInsets.only(left: 90)),
+                      const Padding(padding: EdgeInsets.only(left: 90)),
                       numButton("1"),
                     ]),
               ],
@@ -204,24 +204,24 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
-                _setResult(calculation.ConvertDecimalToBinary("$_number"));
+                _setResult(calculation.ConvertDecimalToBinary(_number));
               }
               return;
             },
             child: Column(
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(bottom: 70)),
+                const Padding(padding: EdgeInsets.only(bottom: 70)),
                 Container(
                   height: 50,
                   color: Colors.orange,
                   child: Text(
-                    "$_convertResult",
+                    _convertResult,
                     style: TextStyle(
                       fontSize: 30,
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 70)),
+                const Padding(padding: EdgeInsets.only(top: 70)),
                 Padding(
                   padding: EdgeInsets.only(bottom: 20),
                   child: TextField(
@@ -229,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     enabled: true,
                     onChanged: _handleText,
                     controller: TextEditingController(
-                      text: '$_number',
+                      text: _number,
                     ),
                   ),
                 ),
@@ -318,30 +318,30 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
-                _setResult(calculation.ConvertHexToDecimal("$_number"));
+                _setResult(calculation.ConvertHexToDecimal(_number));
               }
               return;
             },
             child: Column(
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(bottom: 70)),
+                const Padding(padding: EdgeInsets.only(bottom: 70)),
                 Container(
                   height: 50,
                   color: Colors.orange,
                   child: Text(
-                    "$_convertResult",
+                    _convertResult,
                     style: TextStyle(
                       fontSize: 30,
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 70)),
+                const Padding(padding: EdgeInsets.only(top: 70)),
                 TextField(
                   textAlign: TextAlign.center,
                   enabled: true,
                   onChanged: _handleText,
                   controller: TextEditingController(
-                    text: '$_number',
+                    text: _number,
                   ),
                 ),
                 Row(
