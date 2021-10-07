@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
-import 'dart:math';
+import 'dart:html';
+
+import "package:flutter/material.dart";
+import "dart:math";
+import 'package:simple_binary_convertor/numbutton.dart';
 
 void main() {
   runApp(const MyApp());
@@ -143,6 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    NumButton button = NumButton(context);
     Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
 
@@ -188,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       const Padding(padding: EdgeInsets.only(top: 250)),
-                      numButton("0"),
+                      button.numButton("0"),
                       const Padding(padding: EdgeInsets.only(left: 90)),
                       numButton("1"),
                     ]),
