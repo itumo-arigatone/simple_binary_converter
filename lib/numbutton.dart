@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simple_binary_convertor/setter_getter.dart';
 
 class NumButton {
   late BuildContext context;
@@ -14,13 +13,6 @@ class NumButton {
         fontSize: 35,
       ),
     );
-  }
-
-  void _setNumber(String recieveNum) {
-    SetterGetter setterGetter = SetterGetter();
-    String number = setterGetter.getNumber();
-    number += recieveNum;
-    setterGetter.setNumber(number);
   }
 
   ElevatedButton numButton(String num) {

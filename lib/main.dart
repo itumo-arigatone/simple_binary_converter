@@ -102,12 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _setNumber(String recieveNum) {
-    setState(() {
-      _number += recieveNum;
-    });
-  }
-
   void _clearNum() {
     setState(() {
       _number = "";
