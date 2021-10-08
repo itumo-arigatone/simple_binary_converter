@@ -3,8 +3,9 @@ import 'package:simple_binary_convertor/setter_getter.dart';
 
 class NumButton {
   late BuildContext context;
+  final Function(String inputData) onChangeInputData;
 
-  NumButton(this.context);
+  NumButton(this.context, this.onChangeInputData);
 
   Text buttonStyle(String num) {
     return Text(
@@ -30,7 +31,7 @@ class NumButton {
     double buttonSize = smaller * 0.1;
     return ElevatedButton(
       child: buttonStyle(num),
-      onPressed: () => _setNumber(num),
+      onPressed: () => onChangeInputData(num),
       style: ElevatedButton.styleFrom(
         fixedSize: Size(buttonSize, buttonSize),
         primary: Colors.white,

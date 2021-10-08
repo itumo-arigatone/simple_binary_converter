@@ -96,30 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  ElevatedButton numButton(String num) {
-    Size screenSize = MediaQuery.of(context).size;
-    double height = screenSize.height * 0.72;
-    double width = screenSize.width;
-    double smaller = height > width ? width : height;
-    double buttonSize = smaller * 0.1;
-    return ElevatedButton(
-      child: buttonStyle(num),
-      onPressed: () => _setNumber(num),
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(buttonSize, buttonSize),
-        primary: Colors.white,
-        onPrimary: Colors.black,
-        shape: const CircleBorder(
-          side: BorderSide(
-            color: Colors.black,
-            width: 3,
-            style: BorderStyle.solid,
-          ),
-        ),
-      ),
-    );
-  }
-
   void _handleText(String e) {
     setState(() {
       _number = e;
@@ -144,9 +120,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void setInputData(String inputData) {
+    setState(() {
+      _number += inputData;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    NumButton button = NumButton(context);
+    NumButton button = NumButton(context, setInputData);
     Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
 
@@ -194,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       const Padding(padding: EdgeInsets.only(top: 250)),
                       button.numButton("0"),
                       const Padding(padding: EdgeInsets.only(left: 90)),
-                      numButton("1"),
+                      button.numButton("1"),
                     ]),
               ],
             ),
@@ -251,15 +233,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: <Widget>[
                               Padding(
                                 padding: EdgeInsets.all(10),
-                                child: numButton("1"),
+                                child: button.numButton("1"),
                               ),
                               Padding(
                                 padding: EdgeInsets.all(10),
-                                child: numButton("2"),
+                                child: button.numButton("2"),
                               ),
                               Padding(
                                 padding: EdgeInsets.all(10),
-                                child: numButton("3"),
+                                child: button.numButton("3"),
                               )
                             ],
                           ),
@@ -268,15 +250,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: <Widget>[
                               Padding(
                                 padding: EdgeInsets.all(10),
-                                child: numButton("4"),
+                                child: button.numButton("4"),
                               ),
                               Padding(
                                 padding: EdgeInsets.all(10),
-                                child: numButton("5"),
+                                child: button.numButton("5"),
                               ),
                               Padding(
                                 padding: EdgeInsets.all(10),
-                                child: numButton("6"),
+                                child: button.numButton("6"),
                               ),
                             ],
                           ),
@@ -285,15 +267,15 @@ class _MyHomePageState extends State<MyHomePage> {
                               children: <Widget>[
                                 Padding(
                                   padding: EdgeInsets.all(10),
-                                  child: numButton("7"),
+                                  child: button.numButton("7"),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.all(10),
-                                  child: numButton("8"),
+                                  child: button.numButton("8"),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.all(10),
-                                  child: numButton("9"),
+                                  child: button.numButton("9"),
                                 ),
                               ]),
                           Row(
@@ -301,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: <Widget>[
                               Padding(
                                 padding: EdgeInsets.all(10),
-                                child: numButton("0"),
+                                child: button.numButton("0"),
                               ),
                             ],
                           ),
@@ -353,15 +335,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: numButton("1"),
+                      child: button.numButton("1"),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: numButton("2"),
+                      child: button.numButton("2"),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: numButton("3"),
+                      child: button.numButton("3"),
                     )
                   ],
                 ),
@@ -370,15 +352,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: numButton("4"),
+                      child: button.numButton("4"),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: numButton("5"),
+                      child: button.numButton("5"),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: numButton("6"),
+                      child: button.numButton("6"),
                     ),
                   ],
                 ),
@@ -387,15 +369,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.all(10),
-                        child: numButton("7"),
+                        child: button.numButton("7"),
                       ),
                       Padding(
                         padding: EdgeInsets.all(10),
-                        child: numButton("8"),
+                        child: button.numButton("8"),
                       ),
                       Padding(
                         padding: EdgeInsets.all(10),
-                        child: numButton("9"),
+                        child: button.numButton("9"),
                       ),
                     ]),
                 Row(
@@ -403,7 +385,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: numButton("0"),
+                      child: button.numButton("0"),
                     ),
                   ],
                 ),
