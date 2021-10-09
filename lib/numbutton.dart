@@ -20,7 +20,7 @@ class NumButton {
     double height = screenSize.height * 0.72;
     double width = screenSize.width;
     double smaller = height > width ? width : height;
-    double buttonSize = smaller * 0.1;
+    double buttonSize = smaller * 0.13;
     return ElevatedButton(
       child: buttonStyle(num),
       onPressed: () => onChangeInputData(num),

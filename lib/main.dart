@@ -1,8 +1,7 @@
-import 'dart:html';
-
 import "package:flutter/material.dart";
 import "dart:math";
 import 'package:simple_binary_convertor/numbutton.dart';
+import 'package:simple_binary_convertor/keypad.dart';
 
 void main() {
   runApp(const MyApp());
@@ -123,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     NumButton button = NumButton(context, setInputData);
+    KeyPad keypad = KeyPad(context, setInputData);
     Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
 
@@ -164,14 +164,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     text: _number,
                   ),
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Padding(padding: EdgeInsets.only(top: 250)),
-                      button.numButton("0"),
-                      const Padding(padding: EdgeInsets.only(left: 90)),
-                      button.numButton("1"),
-                    ]),
+                Expanded(
+                  child: FractionallySizedBox(
+                    widthFactor: 1.0,
+                    heightFactor: 0.72,
+                    alignment: const FractionalOffset(0.5, 0.7),
+                    child: keypad.binaryKeyPad(),
+                  ),
+                ),
               ],
             ),
           ),
@@ -218,72 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     widthFactor: 1.0,
                     heightFactor: 0.72,
                     alignment: const FractionalOffset(0.5, 0.7),
-                    child: Container(
-                      color: Colors.orange,
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: button.numButton("1"),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: button.numButton("2"),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: button.numButton("3"),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: button.numButton("4"),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: button.numButton("5"),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: button.numButton("6"),
-                              ),
-                            ],
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: button.numButton("7"),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: button.numButton("8"),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: button.numButton("9"),
-                                ),
-                              ]),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: button.numButton("0"),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: keypad.decimalKeyPad(),
                   ),
                 ),
               ],
@@ -316,72 +251,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 70)),
-                TextField(
-                  textAlign: TextAlign.center,
-                  enabled: true,
-                  onChanged: _handleText,
-                  controller: TextEditingController(
-                    text: _number,
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    enabled: true,
+                    onChanged: _handleText,
+                    controller: TextEditingController(
+                      text: _number,
+                    ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: button.numButton("1"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: button.numButton("2"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: button.numButton("3"),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: button.numButton("4"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: button.numButton("5"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: button.numButton("6"),
-                    ),
-                  ],
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: button.numButton("7"),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: button.numButton("8"),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: button.numButton("9"),
-                      ),
-                    ]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: button.numButton("0"),
-                    ),
-                  ],
+                Expanded(
+                  child: FractionallySizedBox(
+                    widthFactor: 1.0,
+                    heightFactor: 0.72,
+                    alignment: const FractionalOffset(0.5, 0.7),
+                    child: keypad.hexKeypad(),
+                  ),
                 ),
               ],
             ),
