@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "dart:math";
-import 'package:simple_binary_convertor/numbutton.dart';
 import 'package:simple_binary_convertor/keypad.dart';
 
 void main() {
@@ -121,7 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    NumButton button = NumButton(context, setInputData);
     KeyPad keypad = KeyPad(context, setInputData);
     Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
@@ -132,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
       children: <Widget>[
         Scaffold(
           body: Dismissible(
-            key: Key('key'),
+            key: const Key('key'),
             direction: DismissDirection.vertical,
             confirmDismiss: (direction) async {
               if (direction == DismissDirection.up) {
@@ -167,8 +165,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: FractionallySizedBox(
                     widthFactor: 1.0,
-                    heightFactor: 0.72,
-                    alignment: const FractionalOffset(0.5, 0.7),
+                    heightFactor: 0.3,
+                    alignment: const FractionalOffset(0.5, 0.4),
                     child: keypad.binaryKeyPad(),
                   ),
                 ),
@@ -178,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         Scaffold(
           body: Dismissible(
-            key: Key('key1'),
+            key: const Key('key2'),
             direction: DismissDirection.vertical,
             confirmDismiss: (direction) async {
               if (direction == DismissDirection.up) {
@@ -203,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 70)),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: TextField(
                     textAlign: TextAlign.center,
                     enabled: true,
@@ -227,7 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         Scaffold(
           body: Dismissible(
-            key: Key('key1'),
+            key: const Key('key3'),
             direction: DismissDirection.vertical,
             confirmDismiss: (direction) async {
               if (direction == DismissDirection.up) {
@@ -252,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 70)),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: TextField(
                     textAlign: TextAlign.center,
                     enabled: true,
