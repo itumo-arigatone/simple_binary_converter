@@ -85,6 +85,17 @@ class _MyHomePageState extends State<MyHomePage> {
   String _number = "";
   String _convertResult = "";
 
+  /*
+  convertMode
+  0: 2  -> 10
+  1: 2  -> 16
+  2: 10 -> 2
+  3: 10 -> 16
+  4: 16 -> 2
+  5: 16 -> 10
+  */
+  String _convertMode = "0";
+
   Text buttonStyle(String num) {
     return Text(
       num,
@@ -182,7 +193,11 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
-                _setResult(calculation.ConvertDecimalToBinary(_number));
+                if (_convertMode == "0") {
+                  _setResult(calculation.ConvertDecimalToBinary(_number));
+                } else if (_convertMode == "3") {
+                  _setResult(calculation.ConvertDecimalToHex(_number));
+                }
               }
               return;
             },

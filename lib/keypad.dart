@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_binary_convertor/numbutton.dart';
+import 'package:simple_binary_convertor/switch.dart';
 
 class KeyPad {
   late BuildContext context;
@@ -8,6 +9,7 @@ class KeyPad {
   KeyPad(this.context, this.onChangeInputData);
   Container decimalKeyPad() {
     NumButton button = NumButton(context, onChangeInputData);
+    ModeSwitch modeSwitch = ModeSwitch();
     return Container(
       color: Colors.orange,
       child: Column(
@@ -67,7 +69,15 @@ class KeyPad {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
+                child: modeSwitch,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
                 child: button.numButton("0"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: modeSwitch,
               ),
             ],
           ),
