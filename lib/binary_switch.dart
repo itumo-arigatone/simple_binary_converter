@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ModeSwitch extends StatefulWidget {
+  final Function(String mode) setMode;
+  ModeSwitch(this.setMode);
   @override
-  _ModeSwitchState createState() => _ModeSwitchState();
+  _ModeSwitchState createState() => _ModeSwitchState(setMode);
 }
 
 class _ModeSwitchState extends State<ModeSwitch> {
+  final Function(String mode) setMode;
+  _ModeSwitchState(this.setMode);
+
   bool isPressed = false;
   Color primaryColor = Colors.white;
   @override
@@ -15,6 +20,10 @@ class _ModeSwitchState extends State<ModeSwitch> {
         this.isPressed = !this.isPressed;
         setState(() {
           this.primaryColor = this.isPressed ? Colors.grey: Colors.white;
+          if (this.isPressed) {
+            print("newbutton");
+            setMode("2");
+          }
         });
       },
       child: Text(

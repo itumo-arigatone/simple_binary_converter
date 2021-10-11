@@ -129,9 +129,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _setConvertMode(String mode) {
+    setState(() {
+      _convertMode = mode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    KeyPad keypad = KeyPad(context, setInputData);
+    KeyPad keypad = KeyPad(context, setInputData, _setConvertMode);
     Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
 
@@ -193,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
-                if (_convertMode == "0") {
+                if (_convertMode == "2") {
                   _setResult(calculation.ConvertDecimalToBinary(_number));
                 } else if (_convertMode == "3") {
                   _setResult(calculation.ConvertDecimalToHex(_number));
