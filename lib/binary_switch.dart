@@ -4,12 +4,10 @@ class ModeSwitch extends StatefulWidget {
   final Function(String mode) setMode;
   ModeSwitch(this.setMode);
   @override
-  _ModeSwitchState createState() => _ModeSwitchState(setMode);
+  _ModeSwitchState createState() => _ModeSwitchState();
 }
 
 class _ModeSwitchState extends State<ModeSwitch> {
-  final Function(String mode) setMode;
-  _ModeSwitchState(this.setMode);
 
   bool isPressed = false;
   Color primaryColor = Colors.white;
@@ -22,7 +20,7 @@ class _ModeSwitchState extends State<ModeSwitch> {
           this.primaryColor = this.isPressed ? Colors.grey: Colors.white;
           if (this.isPressed) {
             print("newbutton");
-            setMode("2");
+            widget.setMode("2");
           }
         });
       },
