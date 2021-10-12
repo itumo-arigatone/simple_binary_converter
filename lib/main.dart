@@ -252,7 +252,11 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
-                _setResult(calculation.ConvertHexToDecimal(_number));
+                if (_convertMode == "4") {
+                  _setResult(calculation.ConvertHexToBinary(_number));
+                } else if (_convertMode == "5") {
+                  _setResult(calculation.ConvertHexToDecimal(_number));
+                }
               }
               return;
             },

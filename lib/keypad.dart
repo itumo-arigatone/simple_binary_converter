@@ -90,6 +90,8 @@ class KeyPad {
 
     Container hexKeypad() {
       NumButton button = NumButton(context, onChangeInputData);
+      ModeSwitch binaryMode = ModeSwitch(setMode, "4");
+      ModeSwitch decimalMode = ModeSwitch(setMode, "5");
       return Container(
       color: Colors.orange,
       child: Column(
@@ -149,7 +151,15 @@ class KeyPad {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
+                child: binaryMode,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
                 child: button.numButton("0"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: decimalMode,
               ),
             ],
           ),

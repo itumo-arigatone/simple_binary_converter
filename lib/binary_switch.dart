@@ -15,10 +15,10 @@ class _ModeSwitchState extends State<ModeSwitch> {
   Map<String, String> modeDecimal = {
     "0": "to decimal", // binary
     "1": "to hex", // binary
-    "2": "decimal to binary", // decimal
-    "3": "decimal to hex", // decimal
-    "4": "hex to binary", // hex
-    "5": "hex to decimal", // hex
+    "2": "to binary", // decimal
+    "3": "to hex", // decimal
+    "4": "to binary", // hex
+    "5": "to decimal", // hex
   };
   @override
   Widget build(BuildContext context) {
@@ -34,6 +34,7 @@ class _ModeSwitchState extends State<ModeSwitch> {
         });
       },
       child: Text(
+        // String?ってなんだろう。。Stringとは違うらしい
         mode.toString(),
         style: TextStyle(
           fontSize: 15,
