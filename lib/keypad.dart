@@ -170,16 +170,39 @@ class KeyPad {
 
   Container binaryKeyPad() {
     NumButton button = NumButton(context, onChangeInputData);
+    ModeSwitch decimalMode = ModeSwitch(setMode, "0");
+    ModeSwitch hexMode = ModeSwitch(setMode, "1");
     return Container(
       color: Colors.orange,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: <Widget>[
-          const Padding(padding: EdgeInsets.only(top: 250)),
-          button.numButton("0"),
-          const Padding(padding: EdgeInsets.only(left: 90)),
-          button.numButton("1"),
-        ]
+          Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 20, right: 45),
+              child: button.numButton("0"),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, left: 45),
+              child: button.numButton("1"),
+            ),
+            ]
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 40, right: 45),
+                child: decimalMode,
+                ),
+              Padding(
+                padding: const EdgeInsets.only(top: 40, left: 45),
+                child: hexMode,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -23,26 +23,40 @@ class _ModeSwitchState extends State<ModeSwitch> {
   @override
   Widget build(BuildContext context) {
     String? mode = modeDecimal[widget.mode];
-    return ElevatedButton(
-      onPressed: () {
-        this.isPressed = !this.isPressed;
-        setState(() {
-          this.primaryColor = this.isPressed ? Colors.grey: Colors.white;
-          if (this.isPressed) {
-            widget.setMode(widget.mode);
-          }
-        });
-      },
-      child: Text(
-        // String?ってなんだろう。。Stringとは違うらしい
-        mode.toString(),
-        style: TextStyle(
-          fontSize: 15,
+    Size screenSize = MediaQuery.of(context).size;
+    double height = screenSize.height * 0.72;
+    double width = screenSize.width;
+    double smaller = height > width ? width : height;
+    double buttonSizeHight = smaller * 0.13;
+    double buttonSizeWidth = smaller * 0.22;
+    return SizedBox(
+      width: buttonSizeWidth,
+      height: buttonSizeHight,
+      child: ElevatedButton(
+        onPressed: () {
+          isPressed = !isPressed;
+          setState(() {
+            primaryColor = isPressed ? Colors.grey: Colors.white;
+            if (isPressed) {
+              widget.setMode(widget.mode);
+            }
+          });
+        },
+        child: Text(
+          // String?ってなんだろう。。Stringとは違うらしい
+          mode.toString(),
+          style: TextStyle(
+            fontSize: 15,
+          ),
         ),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: primaryColor,
-        onPrimary: Colors.black,
+        style: ElevatedButton.styleFrom(
+          primary: primaryColor,
+          onPrimary: Colors.black,
+          side: BorderSide(
+            color: Colors.black,
+            width: 2,
+          ),
+        ),
       ),
     );
   }

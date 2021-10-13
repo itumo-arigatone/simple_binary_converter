@@ -153,7 +153,11 @@ class _MyHomePageState extends State<MyHomePage> {
               if (direction == DismissDirection.up) {
                 _clearNum();
               } else {
-                _setResult(calculation.ConvertBinaryToHex(_number));
+                if (_convertMode == "0") {
+                  _setResult(calculation.ConvertBinaryToDecimal(_number));
+                } else if (_convertMode == "1") {
+                  _setResult(calculation.ConvertBinaryToHex(_number));
+                }
               }
               return;
             },
