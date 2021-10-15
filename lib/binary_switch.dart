@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class ModeSwitch extends StatefulWidget {
   final Function(String mode) setMode;
+  final Function(bool status) setStatus;
   final String mode;
-  ModeSwitch(this.setMode, this.mode);
+  final bool status;
+  ModeSwitch(this.setMode, this.mode, this.status, this.setStatus);
   @override
   _ModeSwitchState createState() => _ModeSwitchState();
 }
@@ -20,6 +22,17 @@ class _ModeSwitchState extends State<ModeSwitch> {
     "4": "to binary", // hex
     "5": "to decimal", // hex
   };
+
+  void pressed() {
+    isPressed = !isPressed;
+    widget.setStatus(isPressed);
+    setState(() {
+      if (isPressed) {
+        widget.setMode(widget.mode);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String? mode = modeDecimal[widget.mode];
@@ -33,15 +46,7 @@ class _ModeSwitchState extends State<ModeSwitch> {
       width: buttonSizeWidth,
       height: buttonSizeHight,
       child: ElevatedButton(
-        onPressed: () {
-          isPressed = !isPressed;
-          setState(() {
-            primaryColor = isPressed ? Colors.grey: Colors.white;
-            if (isPressed) {
-              widget.setMode(widget.mode);
-            }
-          });
-        },
+        onPressed: widget.status?pressed:null,
         child: Text(
           // String?ってなんだろう。。Stringとは違うらしい
           mode.toString(),

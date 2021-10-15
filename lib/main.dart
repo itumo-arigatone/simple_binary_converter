@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    KeyPad keypad = KeyPad(context, setInputData, _setConvertMode);
+    KeyPad keypad = KeyPad(setInputData, _setConvertMode);
     Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
 
@@ -188,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     widthFactor: 1.0,
                     heightFactor: 0.3,
                     alignment: const FractionalOffset(0.5, 0.4),
-                    child: keypad.binaryKeyPad(),
+                    child: keypad,
                   ),
                 ),
               ],
@@ -241,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     widthFactor: 1.0,
                     heightFactor: 0.72,
                     alignment: const FractionalOffset(0.5, 0.7),
-                    child: keypad.decimalKeyPad(),
+                    child: keypad,
                   ),
                 ),
               ],
@@ -294,7 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     widthFactor: 1.0,
                     heightFactor: 0.72,
                     alignment: const FractionalOffset(0.5, 0.7),
-                    child: keypad.hexKeypad(),
+                    child: keypad,
                   ),
                 ),
               ],

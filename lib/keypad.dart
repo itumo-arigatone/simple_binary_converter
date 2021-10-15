@@ -2,7 +2,65 @@ import 'package:flutter/material.dart';
 import 'package:simple_binary_convertor/numbutton.dart';
 import 'package:simple_binary_convertor/binary_switch.dart';
 
-class KeyPad {
+class KeyPad extends StatefulWidget {
+  final Function(String mode) setMode;
+  final Function(String inputData) onChangeInputData;
+  KeyPad(this.onChangeInputData, this.setMode);
+  @override
+  _KeyPadState createState() => _KeyPadState();
+}
+
+class _KeyPadState extends State<KeyPad>  {
+  bool _switchStatus = true;
+  void _setStatus(bool result) {
+    setState(() {
+      _switchStatus = result;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    bool decimalStatus = _switchStatus?true:false;
+    bool hexStatus = _switchStatus?false:true;
+    NumButton button = NumButton(context, widget.onChangeInputData);
+    ModeSwitch decimalMode = ModeSwitch(widget.setMode, "0", decimalStatus, _setStatus);
+    ModeSwitch hexMode = ModeSwitch(widget.setMode, "1", hexStatus, _setStatus);
+    return Container(
+      color: Colors.orange,
+      child: Column(
+        children: <Widget>[
+          Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 20, right: 45),
+              child: button.numButton("0"),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, left: 45),
+              child: button.numButton("1"),
+            ),
+            ]
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 40, right: 45),
+                child: decimalMode,
+                ),
+              Padding(
+                padding: const EdgeInsets.only(top: 40, left: 45),
+                child: hexMode,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+ /*
+class _KeyPad {
   late BuildContext context;
   final Function(String inputData) onChangeInputData;
   final Function(String mode) setMode;
@@ -167,43 +225,4 @@ class KeyPad {
       ),
     );
   }
-
-  Container binaryKeyPad() {
-    NumButton button = NumButton(context, onChangeInputData);
-    ModeSwitch decimalMode = ModeSwitch(setMode, "0");
-    ModeSwitch hexMode = ModeSwitch(setMode, "1");
-    return Container(
-      color: Colors.orange,
-      child: Column(
-        children: <Widget>[
-          Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 20, right: 45),
-              child: button.numButton("0"),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, left: 45),
-              child: button.numButton("1"),
-            ),
-            ]
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 40, right: 45),
-                child: decimalMode,
-                ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40, left: 45),
-                child: hexMode,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
+}*/
