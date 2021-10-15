@@ -2,15 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:simple_binary_convertor/numbutton.dart';
 import 'package:simple_binary_convertor/binary_switch.dart';
 
-class KeyPad extends StatefulWidget {
+class BinaryKeyPad extends StatefulWidget {
   final Function(String mode) setMode;
   final Function(String inputData) onChangeInputData;
-  KeyPad(this.onChangeInputData, this.setMode);
+  BinaryKeyPad(this.onChangeInputData, this.setMode);
   @override
-  _KeyPadState createState() => _KeyPadState();
+  _BinaryKeyPadState createState() => _BinaryKeyPadState();
 }
 
-class _KeyPadState extends State<KeyPad>  {
+class DecimalKeyPad extends StatefulWidget {
+  final Function(String mode) setMode;
+  final Function(String inputData) onChangeInputData;
+  DecimalKeyPad(this.onChangeInputData, this.setMode);
+  @override
+  _DecimalKeyPadState createState() => _DecimalKeyPadState();
+}
+
+class HexKeyPad extends StatefulWidget {
+  final Function(String mode) setMode;
+  final Function(String inputData) onChangeInputData;
+  HexKeyPad(this.onChangeInputData, this.setMode);
+  @override
+  _HexKeyPadState createState() => _HexKeyPadState();
+}
+
+class _BinaryKeyPadState extends State<BinaryKeyPad>  {
   bool _switchStatus = true;
   void _setStatus() {
     setState(() {
@@ -23,7 +39,6 @@ class _KeyPadState extends State<KeyPad>  {
     ModeSwitch decimalMode = ModeSwitch(widget.setMode, "0", _switchStatus, _setStatus);
     ModeSwitch hexMode = ModeSwitch(widget.setMode, "1", !_switchStatus, _setStatus);
     return Container(
-      color: Colors.orange,
       child: Column(
         children: <Widget>[
           Row(
@@ -57,19 +72,20 @@ class _KeyPadState extends State<KeyPad>  {
     );
   }
 }
- /*
-class _KeyPad {
-  late BuildContext context;
-  final Function(String inputData) onChangeInputData;
-  final Function(String mode) setMode;
 
-  KeyPad(this.context, this.onChangeInputData, this.setMode);
-  Container decimalKeyPad() {
-    NumButton button = NumButton(context, onChangeInputData);
-    ModeSwitch binaryMode = ModeSwitch(setMode, "2");
-    ModeSwitch hexMode = ModeSwitch(setMode, "3");
+class _DecimalKeyPadState extends State<DecimalKeyPad>  {
+  bool _switchStatus = true;
+  void _setStatus() {
+    setState(() {
+      _switchStatus = !_switchStatus;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    NumButton button = NumButton(context, widget.onChangeInputData);
+    ModeSwitch binaryMode = ModeSwitch(widget.setMode, "2", _switchStatus, _setStatus);
+    ModeSwitch hexMode = ModeSwitch(widget.setMode, "3", !_switchStatus, _setStatus);
     return Container(
-      color: Colors.orange,
       child: Column(
         children: <Widget>[
           Row(
@@ -143,13 +159,21 @@ class _KeyPad {
       ),
     );
   }
+}
 
-    Container hexKeypad() {
-      NumButton button = NumButton(context, onChangeInputData);
-      ModeSwitch binaryMode = ModeSwitch(setMode, "4");
-      ModeSwitch decimalMode = ModeSwitch(setMode, "5");
-      return Container(
-      color: Colors.orange,
+class _HexKeyPadState extends State<HexKeyPad>  {
+  bool _switchStatus = true;
+  void _setStatus() {
+    setState(() {
+      _switchStatus = !_switchStatus;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    NumButton button = NumButton(context, widget.onChangeInputData);
+    ModeSwitch binaryMode = ModeSwitch(widget.setMode, "4", _switchStatus, _setStatus);
+    ModeSwitch decimalMode = ModeSwitch(widget.setMode, "5", !_switchStatus, _setStatus);
+    return Container(
       child: Column(
         children: <Widget>[
           Row(
@@ -223,4 +247,4 @@ class _KeyPad {
       ),
     );
   }
-}*/
+}
