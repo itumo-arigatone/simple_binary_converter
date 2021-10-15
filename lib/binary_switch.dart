@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ModeSwitch extends StatefulWidget {
   final Function(String mode) setMode;
-  final Function(bool status) setStatus;
+  final Function() setStatus;
   final String mode;
   final bool status;
   ModeSwitch(this.setMode, this.mode, this.status, this.setStatus);
@@ -24,10 +24,9 @@ class _ModeSwitchState extends State<ModeSwitch> {
   };
 
   void pressed() {
-    isPressed = !isPressed;
-    widget.setStatus(isPressed);
+    widget.setStatus();
     setState(() {
-      if (isPressed) {
+      if (widget.status) {
         widget.setMode(widget.mode);
       }
     });

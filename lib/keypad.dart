@@ -12,18 +12,16 @@ class KeyPad extends StatefulWidget {
 
 class _KeyPadState extends State<KeyPad>  {
   bool _switchStatus = true;
-  void _setStatus(bool result) {
+  void _setStatus() {
     setState(() {
-      _switchStatus = result;
+      _switchStatus = !_switchStatus;
     });
   }
   @override
   Widget build(BuildContext context) {
-    bool decimalStatus = _switchStatus?true:false;
-    bool hexStatus = _switchStatus?false:true;
     NumButton button = NumButton(context, widget.onChangeInputData);
-    ModeSwitch decimalMode = ModeSwitch(widget.setMode, "0", decimalStatus, _setStatus);
-    ModeSwitch hexMode = ModeSwitch(widget.setMode, "1", hexStatus, _setStatus);
+    ModeSwitch decimalMode = ModeSwitch(widget.setMode, "0", _switchStatus, _setStatus);
+    ModeSwitch hexMode = ModeSwitch(widget.setMode, "1", !_switchStatus, _setStatus);
     return Container(
       color: Colors.orange,
       child: Column(
