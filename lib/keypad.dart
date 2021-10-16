@@ -181,6 +181,40 @@ class _HexKeyPadState extends State<HexKeyPad>  {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
+                child: button.numButton("a"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: button.numButton("b"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: button.numButton("c"),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: button.numButton("d"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: button.numButton("e"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: button.numButton("f"),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10),
                 child: button.numButton("1"),
               ),
               Padding(

@@ -168,7 +168,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 const Padding(padding: EdgeInsets.only(bottom: 70)),
                 Container(
                   height: 50,
-                  color: Colors.orange,
                   child: Text(
                     _convertResult,
                     style: TextStyle(
@@ -179,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const Padding(padding: EdgeInsets.only(top: 70)),
                 TextField(
                   textAlign: TextAlign.center,
-                  enabled: true,
+                  enabled: false,
                   onChanged: _handleText,
                   controller: TextEditingController(
                     text: _number,
@@ -188,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: FractionallySizedBox(
                     widthFactor: 1.0,
-                    heightFactor: 0.3,
+                    heightFactor: 0.4,
                     alignment: const FractionalOffset(0.5, 0.4),
                     child: binaryKeypad,
                   ),
@@ -217,8 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 const Padding(padding: EdgeInsets.only(bottom: 70)),
                 Container(
-                  height: 50,
-                  color: Colors.orange,
+                  height: 70,
                   child: Text(
                     _convertResult,
                     style: TextStyle(
@@ -231,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.only(bottom: 20),
                   child: TextField(
                     textAlign: TextAlign.center,
-                    enabled: true,
+                    enabled: false,
                     onChanged: _handleText,
                     controller: TextEditingController(
                       text: _number,
@@ -270,8 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 const Padding(padding: EdgeInsets.only(bottom: 70)),
                 Container(
-                  height: 50,
-                  color: Colors.orange,
+                  height: 70,
                   child: Text(
                     _convertResult,
                     style: TextStyle(
@@ -284,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.only(bottom: 20),
                   child: TextField(
                     textAlign: TextAlign.center,
-                    enabled: true,
+                    enabled: false,
                     onChanged: _handleText,
                     controller: TextEditingController(
                       text: _number,
@@ -294,8 +291,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: FractionallySizedBox(
                     widthFactor: 1.0,
-                    heightFactor: 0.72,
-                    alignment: const FractionalOffset(0.5, 0.7),
+                    heightFactor: 1.0,
+                    // alignment: const FractionalOffset(0.5, 0.7),
                     child: hexKeypad,
                   ),
                 ),
