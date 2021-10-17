@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class Calculation {
   // 2 -> 16
-  String ConvertBinaryToHex(binary) {
+  String convertBinaryToHex(binary) {
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
     List<String> numArray = removeZero.split("");
     num deci = 0;
@@ -45,7 +45,7 @@ class Calculation {
   }
 
   // 2 -> 10
-  String ConvertBinaryToDecimal(binary) {
+  String convertBinaryToDecimal(binary) {
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
     List<String> numArray = removeZero.split("");
     num deci = 0;
@@ -57,25 +57,25 @@ class Calculation {
   }
 
   //10 -> 2
-  String ConvertDecimalToBinary(number) {
+  String convertDecimalToBinary(number) {
     int num = int.parse(number);
     return num.toRadixString(2);
   }
 
   //10->16
-  String ConvertDecimalToHex(number) {
+  String convertDecimalToHex(number) {
     int num = int.parse(number);
     return num.toRadixString(16);
   }
 
   // 16 -> 2
-  String ConvertHexToBinary(hex) {
+  String convertHexToBinary(hex) {
     int num = int.parse("0x" + hex);
     return num.toRadixString(2);
   }
 
   // 16 -> 10
-  String ConvertHexToDecimal(hex) {
+  String convertHexToDecimal(hex) {
     int num = int.parse("0x" + hex);
     return num.toRadixString(10);
   }
@@ -134,6 +134,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _convertMode = mode;
     });
   }
+  
+  void _onPageChanged(int page) {
+    _clearNum();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final PageController controller = PageController(initialPage: 0);
 
     return PageView(
+      onPageChanged: _onPageChanged,
       scrollDirection: Axis.horizontal,
       controller: controller,
       children: <Widget>[
@@ -156,9 +161,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 _clearNum();
               } else {
                 if (_convertMode == "0") {
-                  _setResult(calculation.ConvertBinaryToDecimal(_number));
+                  _setResult(calculation.convertBinaryToDecimal(_number));
                 } else if (_convertMode == "1") {
-                  _setResult(calculation.ConvertBinaryToHex(_number));
+                  _setResult(calculation.convertBinaryToHex(_number));
                 }
               }
               return;
@@ -205,9 +210,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 _clearNum();
               } else {
                 if (_convertMode == "2") {
-                  _setResult(calculation.ConvertDecimalToBinary(_number));
+                  _setResult(calculation.convertDecimalToBinary(_number));
                 } else if (_convertMode == "3") {
-                  _setResult(calculation.ConvertDecimalToHex(_number));
+                  _setResult(calculation.convertDecimalToHex(_number));
                 }
               }
               return;
@@ -257,9 +262,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 _clearNum();
               } else {
                 if (_convertMode == "4") {
-                  _setResult(calculation.ConvertHexToBinary(_number));
+                  _setResult(calculation.convertHexToBinary(_number));
                 } else if (_convertMode == "5") {
-                  _setResult(calculation.ConvertHexToDecimal(_number));
+                  _setResult(calculation.convertHexToDecimal(_number));
                 }
               }
               return;

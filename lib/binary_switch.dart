@@ -26,9 +26,7 @@ class _ModeSwitchState extends State<ModeSwitch> {
   void pressed() {
     widget.setStatus();
     setState(() {
-      if (widget.status) {
-        widget.setMode(widget.mode);
-      }
+      widget.setMode(widget.mode);
     });
   }
 
