@@ -1,9 +1,18 @@
 import "package:flutter/material.dart";
 import "dart:math";
 import 'package:simple_binary_convertor/keypad.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
+import 'ad_state.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  final initFuture = MobileAds.instance.initialize();
+  final adState = AdState(initFuture);
+  runApp(Provider.value(
+    value: adState,
+    builder: (context, child) => MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -96,6 +105,23 @@ class _MyHomePageState extends State<MyHomePage> {
   */
   String _convertMode = "0";
 
+  late BannerAd banner;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final adState = Provider.of<AdState>(context);
+    adState.initialization.then((status) {
+      setState(() {
+        banner = BannerAd(
+          adUnitId: adState.bannerAdUnitId,
+          size: AdSize.banner,
+          request: AdRequest(),
+          listener: adState.adListener,
+        )..load();
+      });
+    });
+  }
+
   Text buttonStyle(String num) {
     return Text(
       num,
@@ -170,7 +196,10 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: Column(
               children: <Widget>[
-                const Padding(padding: EdgeInsets.only(bottom: 70)),
+                Container(
+                  height: 50,
+                  child: AdWidget(ad: banner),
+                ),
                 Container(
                   height: 50,
                   child: Text(
