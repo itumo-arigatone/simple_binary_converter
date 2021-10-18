@@ -2,17 +2,12 @@ import "package:flutter/material.dart";
 import "dart:math";
 import 'package:simple_binary_convertor/keypad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
-import 'ad_state.dart';
+import 'dart:io' show Platform;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final initFuture = MobileAds.instance.initialize();
-  final adState = AdState(initFuture);
-  runApp(Provider.value(
-    value: adState,
-    builder: (context, child) => MyApp(),
-  ));
+  MobileAds.instance.initialize();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -93,6 +88,13 @@ class Calculation {
 class _MyHomePageState extends State<MyHomePage> {
   String _number = "";
   String _convertResult = "";
+  BannerAd? _anchoredBanner;
+  bool _loadingAnchoredBanner = false;
+  static final AdRequest request = AdRequest(
+    keywords: <String>['foo', 'bar'],
+    contentUrl: 'http://foo.com/bar.html',
+    nonPersonalizedAds: true,
+  );
 
   /*
   convertMode
@@ -104,23 +106,6 @@ class _MyHomePageState extends State<MyHomePage> {
   5: 16 -> 10
   */
   String _convertMode = "0";
-
-  late BannerAd banner;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final adState = Provider.of<AdState>(context);
-    adState.initialization.then((status) {
-      setState(() {
-        banner = BannerAd(
-          adUnitId: adState.bannerAdUnitId,
-          size: AdSize.banner,
-          request: AdRequest(),
-          listener: adState.adListener,
-        )..load();
-      });
-    });
-  }
 
   Text buttonStyle(String num) {
     return Text(
@@ -160,9 +145,51 @@ class _MyHomePageState extends State<MyHomePage> {
       _convertMode = mode;
     });
   }
-  
+
   void _onPageChanged(int page) {
     _clearNum();
+  }
+
+  Future<void> _createAnchoredBanner(BuildContext context) async {
+    final AnchoredAdaptiveBannerAdSize? size =
+        await AdSize.getAnchoredAdaptiveBannerAdSize(
+      Orientation.portrait,
+      MediaQuery.of(context).size.width.truncate(),
+    );
+
+    if (size == null) {
+      print('Unable to get height of anchored banner.');
+      return;
+    }
+
+    final BannerAd banner = BannerAd(
+      size: size,
+      request: request,
+      adUnitId: Platform.isAndroid
+          ? 'ca-app-pub-3940256099942544/6300978111'
+          : 'ca-app-pub-3940256099942544/2934735716',
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          print('$BannerAd loaded.');
+          setState(() {
+            _anchoredBanner = ad as BannerAd?;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          print('$BannerAd failedToLoad: $error');
+          ad.dispose();
+        },
+        onAdOpened: (Ad ad) => print('$BannerAd onAdOpened.'),
+        onAdClosed: (Ad ad) => print('$BannerAd onAdClosed.'),
+      ),
+    );
+    return banner.load();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _anchoredBanner?.dispose();
   }
 
   @override
@@ -173,168 +200,179 @@ class _MyHomePageState extends State<MyHomePage> {
     Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
 
-    return PageView(
-      onPageChanged: _onPageChanged,
-      scrollDirection: Axis.horizontal,
-      controller: controller,
-      children: <Widget>[
-        Scaffold(
-          body: Dismissible(
-            key: const Key('key'),
-            direction: DismissDirection.vertical,
-            confirmDismiss: (direction) async {
-              if (direction == DismissDirection.up) {
-                _clearNum();
-              } else {
-                if (_convertMode == "0") {
-                  _setResult(calculation.convertBinaryToDecimal(_number));
-                } else if (_convertMode == "1") {
-                  _setResult(calculation.convertBinaryToHex(_number));
-                }
-              }
-              return;
-            },
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: 50,
-                  child: AdWidget(ad: banner),
-                ),
-                Container(
-                  height: 50,
-                  child: Text(
-                    _convertResult,
-                    style: TextStyle(
-                      fontSize: 30,
+    return MaterialApp(
+      home: Builder(builder: (BuildContext context) {
+        if (!_loadingAnchoredBanner) {
+          _loadingAnchoredBanner = true;
+          _createAnchoredBanner(context);
+        }
+        return PageView(
+          onPageChanged: _onPageChanged,
+          scrollDirection: Axis.horizontal,
+          controller: controller,
+          children: <Widget>[
+            Scaffold(
+              body: Dismissible(
+                key: const Key('key'),
+                direction: DismissDirection.vertical,
+                confirmDismiss: (direction) async {
+                  if (direction == DismissDirection.up) {
+                    _clearNum();
+                  } else {
+                    if (_convertMode == "0") {
+                      _setResult(calculation.convertBinaryToDecimal(_number));
+                    } else if (_convertMode == "1") {
+                      _setResult(calculation.convertBinaryToHex(_number));
+                    }
+                  }
+                  return;
+                },
+                child: Column(
+                  children: <Widget>[
+                    if (_anchoredBanner != null)
+                      Container(
+                        color: Colors.green,
+                        width: _anchoredBanner!.size.width.toDouble(),
+                        height: _anchoredBanner!.size.height.toDouble(),
+                        child: AdWidget(ad: _anchoredBanner!),
+                      ),
+                    Container(
+                      height: 50,
+                      child: Text(
+                        _convertResult,
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),
+                      ),
                     ),
-                  ),
+                    const Padding(padding: EdgeInsets.only(top: 70)),
+                    TextField(
+                      textAlign: TextAlign.center,
+                      enabled: false,
+                      onChanged: _handleText,
+                      controller: TextEditingController(
+                        text: _number,
+                      ),
+                    ),
+                    Expanded(
+                      child: FractionallySizedBox(
+                        widthFactor: 1.0,
+                        heightFactor: 0.4,
+                        alignment: const FractionalOffset(0.5, 0.4),
+                        child: binaryKeypad,
+                      ),
+                    ),
+                  ],
                 ),
-                const Padding(padding: EdgeInsets.only(top: 70)),
-                TextField(
-                  textAlign: TextAlign.center,
-                  enabled: false,
-                  onChanged: _handleText,
-                  controller: TextEditingController(
-                    text: _number,
-                  ),
-                ),
-                Expanded(
-                  child: FractionallySizedBox(
-                    widthFactor: 1.0,
-                    heightFactor: 0.4,
-                    alignment: const FractionalOffset(0.5, 0.4),
-                    child: binaryKeypad,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-        Scaffold(
-          body: Dismissible(
-            key: const Key('key2'),
-            direction: DismissDirection.vertical,
-            confirmDismiss: (direction) async {
-              if (direction == DismissDirection.up) {
-                _clearNum();
-              } else {
-                if (_convertMode == "2") {
-                  _setResult(calculation.convertDecimalToBinary(_number));
-                } else if (_convertMode == "3") {
-                  _setResult(calculation.convertDecimalToHex(_number));
-                }
-              }
-              return;
-            },
-            child: Column(
-              children: <Widget>[
-                const Padding(padding: EdgeInsets.only(bottom: 70)),
-                Container(
-                  height: 70,
-                  child: Text(
-                    _convertResult,
-                    style: TextStyle(
-                      fontSize: 30,
+            Scaffold(
+              body: Dismissible(
+                key: const Key('key2'),
+                direction: DismissDirection.vertical,
+                confirmDismiss: (direction) async {
+                  if (direction == DismissDirection.up) {
+                    _clearNum();
+                  } else {
+                    if (_convertMode == "2") {
+                      _setResult(calculation.convertDecimalToBinary(_number));
+                    } else if (_convertMode == "3") {
+                      _setResult(calculation.convertDecimalToHex(_number));
+                    }
+                  }
+                  return;
+                },
+                child: Column(
+                  children: <Widget>[
+                    const Padding(padding: EdgeInsets.only(bottom: 70)),
+                    Container(
+                      height: 70,
+                      child: Text(
+                        _convertResult,
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 70)),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    enabled: false,
-                    onChanged: _handleText,
-                    controller: TextEditingController(
-                      text: _number,
+                    const Padding(padding: EdgeInsets.only(top: 70)),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        enabled: false,
+                        onChanged: _handleText,
+                        controller: TextEditingController(
+                          text: _number,
+                        ),
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      child: FractionallySizedBox(
+                        widthFactor: 1.0,
+                        heightFactor: 0.72,
+                        alignment: const FractionalOffset(0.5, 0.7),
+                        child: decimalKeypad,
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: FractionallySizedBox(
-                    widthFactor: 1.0,
-                    heightFactor: 0.72,
-                    alignment: const FractionalOffset(0.5, 0.7),
-                    child: decimalKeypad,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-        Scaffold(
-          body: Dismissible(
-            key: const Key('key3'),
-            direction: DismissDirection.vertical,
-            confirmDismiss: (direction) async {
-              if (direction == DismissDirection.up) {
-                _clearNum();
-              } else {
-                if (_convertMode == "4") {
-                  _setResult(calculation.convertHexToBinary(_number));
-                } else if (_convertMode == "5") {
-                  _setResult(calculation.convertHexToDecimal(_number));
-                }
-              }
-              return;
-            },
-            child: Column(
-              children: <Widget>[
-                const Padding(padding: EdgeInsets.only(bottom: 70)),
-                Container(
-                  height: 70,
-                  child: Text(
-                    _convertResult,
-                    style: TextStyle(
-                      fontSize: 30,
+            Scaffold(
+              body: Dismissible(
+                key: const Key('key3'),
+                direction: DismissDirection.vertical,
+                confirmDismiss: (direction) async {
+                  if (direction == DismissDirection.up) {
+                    _clearNum();
+                  } else {
+                    if (_convertMode == "4") {
+                      _setResult(calculation.convertHexToBinary(_number));
+                    } else if (_convertMode == "5") {
+                      _setResult(calculation.convertHexToDecimal(_number));
+                    }
+                  }
+                  return;
+                },
+                child: Column(
+                  children: <Widget>[
+                    const Padding(padding: EdgeInsets.only(bottom: 70)),
+                    Container(
+                      height: 70,
+                      child: Text(
+                        _convertResult,
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 70)),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    enabled: false,
-                    onChanged: _handleText,
-                    controller: TextEditingController(
-                      text: _number,
+                    const Padding(padding: EdgeInsets.only(top: 70)),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        enabled: false,
+                        onChanged: _handleText,
+                        controller: TextEditingController(
+                          text: _number,
+                        ),
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      child: FractionallySizedBox(
+                        widthFactor: 1.0,
+                        heightFactor: 1.0,
+                        // alignment: const FractionalOffset(0.5, 0.7),
+                        child: hexKeypad,
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: FractionallySizedBox(
-                    widthFactor: 1.0,
-                    heightFactor: 1.0,
-                    // alignment: const FractionalOffset(0.5, 0.7),
-                    child: hexKeypad,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+      }),
     );
   }
 }
