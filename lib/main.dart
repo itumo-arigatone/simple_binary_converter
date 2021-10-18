@@ -90,11 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _convertResult = "";
   BannerAd? _anchoredBanner;
   bool _loadingAnchoredBanner = false;
-  static final AdRequest request = AdRequest(
-    keywords: <String>['foo', 'bar'],
-    contentUrl: 'http://foo.com/bar.html',
-    nonPersonalizedAds: true,
-  );
+  static final AdRequest request = AdRequest();
 
   /*
   convertMode
@@ -236,16 +232,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: _anchoredBanner!.size.height.toDouble(),
                         child: AdWidget(ad: _anchoredBanner!),
                       ),
-                    Container(
-                      height: 50,
-                      child: Text(
-                        _convertResult,
-                        style: TextStyle(
-                          fontSize: 30,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: Container(
+                        height: 50,
+                        child: Text(
+                          _convertResult,
+                          style: TextStyle(
+                            fontSize: 30,
+                          ),
                         ),
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 70)),
+                    const Padding(padding: EdgeInsets.only(top: 30)),
                     TextField(
                       textAlign: TextAlign.center,
                       enabled: false,
@@ -294,7 +293,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 70)),
+                    const Padding(padding: EdgeInsets.only(top: 40)),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20),
                       child: TextField(
@@ -346,7 +345,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 70)),
+                    const Padding(padding: EdgeInsets.only(top: 30)),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20),
                       child: TextField(
