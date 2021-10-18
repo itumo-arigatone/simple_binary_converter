@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "dart:math";
-import 'package:simple_binary_convertor/keypad.dart';
+import 'package:simple_binary_converter/keypad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:io' show Platform;
 

@@ -1,6 +1,6 @@
 {
-    "name": "simple_binary_convertor",
-    "short_name": "simple_binary_convertor",
+    "name": "simple_binary_converter",
+    "short_name": "simple_binary_converter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

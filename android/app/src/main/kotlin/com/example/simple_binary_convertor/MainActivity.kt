@@ -1,4 +1,4 @@
-package com.example.simple_binary_convertor
+package com.example.simple_binary_converter
 
 import io.flutter.embedding.android.FlutterActivity
 

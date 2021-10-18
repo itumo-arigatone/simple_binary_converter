@@ -1,4 +1,4 @@
-# simple_binary_convertor
+# simple_binary_converter
 
 A new Flutter project.
 
