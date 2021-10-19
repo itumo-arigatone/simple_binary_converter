@@ -11,7 +11,6 @@ class ModeSwitch extends StatefulWidget {
 }
 
 class _ModeSwitchState extends State<ModeSwitch> {
-
   bool isPressed = false;
   Color primaryColor = Colors.white;
   Map<String, String> modeDecimal = {
@@ -43,7 +42,7 @@ class _ModeSwitchState extends State<ModeSwitch> {
       width: buttonSizeWidth,
       height: buttonSizeHight,
       child: ElevatedButton(
-        onPressed: widget.status?pressed:null,
+        onPressed: widget.status ? pressed : null,
         child: Text(
           // String?ってなんだろう。。Stringとは違うらしい
           mode.toString(),

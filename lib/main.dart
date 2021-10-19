@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
   4: 16 -> 2
   5: 16 -> 10
   */
-  String _convertMode = "0";
+  String _convertMode = "1";
 
   Text buttonStyle(String num) {
     return Text(
@@ -143,6 +143,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onPageChanged(int page) {
+    if (page == 0) {
+      _setConvertMode("1");
+    } else if (page == 1) {
+      _setConvertMode("3");
+    } else {
+      _setConvertMode("5");
+    }
     _clearNum();
   }
 

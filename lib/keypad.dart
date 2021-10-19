@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_binary_converter/numbutton.dart';
-import 'package:simple_binary_converter/binary_switch.dart';
+import 'package:simple_binary_converter/mode_select_switch.dart';
 
 class BinaryKeyPad extends StatefulWidget {
   final Function(String mode) setMode;
