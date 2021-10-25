@@ -62,25 +62,25 @@ class Calculation {
 
   //10 -> 2
   String convertDecimalToBinary(number) {
-    int num = int.parse(number);
+    int num = number==""?0:int.parse(number);
     return num.toRadixString(2);
   }
 
   //10->16
   String convertDecimalToHex(number) {
-    int num = int.parse(number);
+    int num = number==""?0:int.parse(number);
     return num.toRadixString(16);
   }
 
   // 16 -> 2
   String convertHexToBinary(hex) {
-    int num = int.parse("0x" + hex);
+    int num = hex==""?0:int.parse("0x" + hex);
     return num.toRadixString(2);
   }
 
   // 16 -> 10
   String convertHexToDecimal(hex) {
-    int num = int.parse("0x" + hex);
+    int num = hex==""?0:int.parse("0x" + hex);
     return num.toRadixString(10);
   }
 }
