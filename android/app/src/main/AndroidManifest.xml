@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.simple_binary_converter">
+    package="com.unkomorasi01.simple_binary_converter">
    <application
         android:label="simple_binary_converter"
         android:icon="@mipmap/ic_launcher">
@@ -39,6 +39,6 @@
             android:value="2" />
         <meta-data
           android:name="com.google.android.gms.ads.APPLICATION_ID"
-          android:value="ca-app-pub-3940256099942544~6300978111"/>
+          android:value="ca-app-pub-9341570175762550~3125781311"/>
     </application>
 </manifest>
