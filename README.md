@@ -1,6 +1,14 @@
 # simple_binary_converter
 
-A new Flutter project.
+2 -> 10  
+2 -> 16  
+10 -> 2  
+10 -> 16  
+16 -> 2  
+16 -> 10  
+  
+Currently, minus and decirl point cannot be used.
+<a href='https://play.google.com/store/apps/details?id=com.unkomorasi01.simple_binary_converter&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='doc/google-play-badge.png'/></a>
 
 ## Getting Started
 
