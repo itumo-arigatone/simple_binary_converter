@@ -1,11 +1,18 @@
 import "package:flutter/material.dart";
 import "dart:math";
+import 'package:flutter/services.dart';
 import 'package:simple_binary_converter/keypad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:io' show Platform;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  // ステータスバーの上部の変な半透明を消す
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    )
+  );
   MobileAds.instance.initialize();
   runApp(const MyApp());
 }
