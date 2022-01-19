@@ -270,7 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Expanded(
                       child: FractionallySizedBox(
                         widthFactor: 1.0,
-                        heightFactor: 0.4,
+                        heightFactor: 0.8,
                         alignment: const FractionalOffset(0.5, 0.4),
                         child: binaryKeypad,
                       ),
