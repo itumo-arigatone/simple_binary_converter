@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:simple_binary_converter/keypad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:io' show Platform;
+import 'package:simple_binary_converter/copy_button.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -209,6 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
     HexKeyPad hexKeypad = HexKeyPad(setInputData, _setConvertMode);
     Calculation calculation = Calculation();
     final PageController controller = PageController(initialPage: 0);
+    CopyButton copyButton = CopyButton();
 
     return MaterialApp(
       home: Builder(builder: (BuildContext context) {
@@ -267,6 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         text: _number,
                       ),
                     ),
+                    copyButton.copyButton(),
                     Expanded(
                       child: FractionallySizedBox(
                         widthFactor: 1.0,
