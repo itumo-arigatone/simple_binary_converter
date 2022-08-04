@@ -38,4 +38,29 @@ class NumButton {
       ),
     );
   }
+
+  ElevatedButton largeButton(String num) {
+    Size screenSize = MediaQuery.of(context).size;
+    double height = screenSize.height * 0.72;
+    double width = screenSize.width;
+    double smaller = height > width ? width : height;
+    double buttonSize = smaller * 0.40;
+    return ElevatedButton(
+      child: buttonStyle(num),
+      onPressed: () => onChangeInputData(num),
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(buttonSize, buttonSize),
+        primary: Colors.white,
+        onPrimary: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(45),
+          side: BorderSide(
+            width: 3,
+            color: Colors.black,
+            style: BorderStyle.solid,  
+          ),
+        ),
+      ),
+    );
+  }
 }

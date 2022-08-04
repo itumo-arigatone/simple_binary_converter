@@ -46,23 +46,23 @@ class _BinaryKeyPadState extends State<BinaryKeyPad> {
         children: <Widget>[
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 20, right: 45),
-              child: button.numButton("0"),
+              padding: const EdgeInsets.only(top: 0, right: 10),
+              child: button.largeButton("0"),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 45),
-              child: button.numButton("1"),
+              padding: const EdgeInsets.only(top: 0, left: 10),
+              child: button.largeButton("1"),
             ),
           ]),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 40, right: 45),
+                padding: const EdgeInsets.only(top: 30, right: 45),
                 child: decimalMode,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 40, left: 45),
+                padding: const EdgeInsets.only(top: 30, left: 45),
                 child: hexMode,
               ),
             ],
