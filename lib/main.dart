@@ -144,6 +144,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void deleteInputData(String inputData) {
+    setState(() {
+      int length = inputData.length - 1;
+      _number = length >= 0  ? inputData.substring(0, length) : _number;
+    });
+  }
+
   void _setConvertMode(String mode) {
     setState(() {
       _convertMode = mode;
@@ -251,25 +258,50 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 40),
                       child: Container(
-                        height: 50,
-                        child: Text(
-                          _convertResult,
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
+                        height: 100,
+                        color: Colors.yellow,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 9,
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  _convertResult,
+                                  style: const TextStyle(fontSize: 30,),
+                                ),
+                              )
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: copyButton.copyButton(_convertResult),
+                            ),
+                          ]
                         ),
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 30)),
-                    TextField(
-                      textAlign: TextAlign.center,
-                      enabled: false,
-                      onChanged: _handleText,
-                      controller: TextEditingController(
-                        text: _number,
+                    Container(
+                      width: 350,
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              enabled: false,
+                              onChanged: _handleText,
+                              controller: TextEditingController(
+                                text: _number,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.backspace_outlined),
+                            onPressed: () => deleteInputData(_number),
+                          ),
+                        ]
                       ),
                     ),
-                    copyButton.copyButton(),
                     Expanded(
                       child: FractionallySizedBox(
                         widthFactor: 1.0,
