@@ -138,12 +138,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void setInputData(String inputData) {
-    setState(() {
-      _number += inputData;
-    });
-  }
-
   void deleteInputData(String inputData) {
     setState(() {
       int length = inputData.length - 1;
@@ -212,6 +206,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    void setInputData(String inputData) {
+      if (_number.length >= 32) {
+        // show message
+      } else {
+        setState(() {
+          _number += inputData;
+        });
+      }
+    }
+
     BinaryKeyPad binaryKeypad = BinaryKeyPad(setInputData, _setConvertMode);
     DecimalKeyPad decimalKeypad = DecimalKeyPad(setInputData, _setConvertMode);
     HexKeyPad hexKeypad = HexKeyPad(setInputData, _setConvertMode);
