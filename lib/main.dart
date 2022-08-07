@@ -207,8 +207,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    void setInputData(String inputData) {
-      if (_number.length >= 32) {
+    void setInputData(String inputData, String page) {
+      if (_number.length >= 32 && page == "binary") {
+        // show message
+      } else if (_number.length >= 18 && page == "decimal") {
+        // show message
+      } else if (_number.length >= 15 && page == "hex") {
         // show message
       } else {
         setState(() {
@@ -264,7 +268,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.only(top: 40),
                       child: Container(
                         height: 100,
-                        color: Colors.yellow,
                         child: Row(
                           children: <Widget>[
                             Expanded(
@@ -339,24 +342,45 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     const Padding(padding: EdgeInsets.only(bottom: 70)),
                     Container(
-                      height: 70,
-                      child: Text(
-                        _convertResult,
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
+                      height: 100,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 9,
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                _convertResult,
+                                style: const TextStyle(fontSize: 30),
+                              ),
+                            )
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: copyButton.copyButton(_convertResult),
+                          ),
+                        ]
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 40)),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        enabled: false,
-                        onChanged: _handleText,
-                        controller: TextEditingController(
-                          text: _number,
-                        ),
+                    Container(
+                      width: 350,
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              enabled: false,
+                              onChanged: _handleText,
+                              controller: TextEditingController(
+                                text: _number,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.backspace_outlined),
+                            onPressed: () => deleteInputData(_number),
+                          ),
+                        ]
                       ),
                     ),
                     Expanded(
@@ -391,24 +415,45 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     const Padding(padding: EdgeInsets.only(bottom: 70)),
                     Container(
-                      height: 70,
-                      child: Text(
-                        _convertResult,
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
+                      height: 100,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 9,
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                _convertResult,
+                                style: const TextStyle(fontSize: 30),
+                              ),
+                            )
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: copyButton.copyButton(_convertResult),
+                          ),
+                        ]
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 30)),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        enabled: false,
-                        onChanged: _handleText,
-                        controller: TextEditingController(
-                          text: _number,
-                        ),
+                    Container(
+                      width: 350,
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              enabled: false,
+                              onChanged: _handleText,
+                              controller: TextEditingController(
+                                text: _number,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.backspace_outlined),
+                            onPressed: () => deleteInputData(_number),
+                          ),
+                        ]
                       ),
                     ),
                     Expanded(

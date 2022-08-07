@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NumButton {
   late BuildContext context;
-  final Function(String inputData) onChangeInputData;
+  final Function(String inputData, String page) onChangeInputData;
 
   NumButton(this.context, this.onChangeInputData);
 
@@ -15,7 +15,7 @@ class NumButton {
     );
   }
 
-  ElevatedButton numButton(String num) {
+  ElevatedButton numButton(String num, String page) {
     Size screenSize = MediaQuery.of(context).size;
     double height = screenSize.height * 0.72;
     double width = screenSize.width;
@@ -23,7 +23,7 @@ class NumButton {
     double buttonSize = smaller * 0.13;
     return ElevatedButton(
       child: buttonStyle(num),
-      onPressed: () => onChangeInputData(num),
+      onPressed: () => onChangeInputData(num, page),
       style: ElevatedButton.styleFrom(
         fixedSize: Size(buttonSize, buttonSize),
         primary: Colors.white,
@@ -39,7 +39,7 @@ class NumButton {
     );
   }
 
-  ElevatedButton largeButton(String num) {
+  ElevatedButton largeButton(String num, String page) {
     Size screenSize = MediaQuery.of(context).size;
     double height = screenSize.height * 0.72;
     double width = screenSize.width;
@@ -47,7 +47,7 @@ class NumButton {
     double buttonSize = smaller * 0.40;
     return ElevatedButton(
       child: buttonStyle(num),
-      onPressed: () => onChangeInputData(num),
+      onPressed: () => onChangeInputData(num, page),
       style: ElevatedButton.styleFrom(
         fixedSize: Size(buttonSize, buttonSize),
         primary: Colors.white,
