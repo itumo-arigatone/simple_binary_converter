@@ -236,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: _anchoredBanner!.size.width.toDouble() + 40,
               height: _anchoredBanner!.size.height.toDouble() + 40,
               child: Padding(
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 20),
                 child: AdWidget(ad: _anchoredBanner!),
                 )
             ),
