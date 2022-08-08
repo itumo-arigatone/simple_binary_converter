@@ -41,4 +41,6 @@
           android:name="com.google.android.gms.ads.APPLICATION_ID"
           android:value="ca-app-pub-9341570175762550~3125781311"/>
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 </manifest>
