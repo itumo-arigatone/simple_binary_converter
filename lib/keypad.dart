@@ -4,7 +4,7 @@ import 'package:simple_binary_converter/mode_select_switch.dart';
 
 class BinaryKeyPad extends StatefulWidget {
   final Function(String mode) setMode;
-  final Function(String inputData) onChangeInputData;
+  final Function(String inputData, String page) onChangeInputData;
   BinaryKeyPad(this.onChangeInputData, this.setMode);
   @override
   _BinaryKeyPadState createState() => _BinaryKeyPadState();
@@ -12,7 +12,7 @@ class BinaryKeyPad extends StatefulWidget {
 
 class DecimalKeyPad extends StatefulWidget {
   final Function(String mode) setMode;
-  final Function(String inputData) onChangeInputData;
+  final Function(String inputData, String page) onChangeInputData;
   DecimalKeyPad(this.onChangeInputData, this.setMode);
   @override
   _DecimalKeyPadState createState() => _DecimalKeyPadState();
@@ -20,7 +20,7 @@ class DecimalKeyPad extends StatefulWidget {
 
 class HexKeyPad extends StatefulWidget {
   final Function(String mode) setMode;
-  final Function(String inputData) onChangeInputData;
+  final Function(String inputData, String page) onChangeInputData;
   HexKeyPad(this.onChangeInputData, this.setMode);
   @override
   _HexKeyPadState createState() => _HexKeyPadState();
@@ -36,6 +36,7 @@ class _BinaryKeyPadState extends State<BinaryKeyPad> {
 
   @override
   Widget build(BuildContext context) {
+    const String binary = "binary";
     NumButton button = NumButton(context, widget.onChangeInputData);
     ModeSwitch decimalMode =
         ModeSwitch(widget.setMode, "0", _switchStatus, _setStatus);
@@ -47,11 +48,11 @@ class _BinaryKeyPadState extends State<BinaryKeyPad> {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 0, right: 10),
-              child: button.largeButton("0"),
+              child: button.largeButton("0", binary),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 0, left: 10),
-              child: button.largeButton("1"),
+              child: button.largeButton("1", binary),
             ),
           ]),
           Row(
@@ -83,6 +84,7 @@ class _DecimalKeyPadState extends State<DecimalKeyPad> {
 
   @override
   Widget build(BuildContext context) {
+    const String decimal = "decimal";
     NumButton button = NumButton(context, widget.onChangeInputData);
     ModeSwitch binaryMode =
         ModeSwitch(widget.setMode, "2", _switchStatus, _setStatus);
@@ -96,15 +98,15 @@ class _DecimalKeyPadState extends State<DecimalKeyPad> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("1"),
+                child: button.numButton("1", decimal),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("2"),
+                child: button.numButton("2", decimal),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("3"),
+                child: button.numButton("3", decimal),
               )
             ],
           ),
@@ -113,30 +115,30 @@ class _DecimalKeyPadState extends State<DecimalKeyPad> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("4"),
+                child: button.numButton("4", decimal),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("5"),
+                child: button.numButton("5", decimal),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("6"),
+                child: button.numButton("6", decimal),
               ),
             ],
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10),
-              child: button.numButton("7"),
+              child: button.numButton("7", decimal),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: button.numButton("8"),
+              child: button.numButton("8", decimal),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: button.numButton("9"),
+              child: button.numButton("9", decimal),
             ),
           ]),
           Row(
@@ -148,7 +150,7 @@ class _DecimalKeyPadState extends State<DecimalKeyPad> {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("0"),
+                child: button.numButton("0", decimal),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
@@ -172,6 +174,7 @@ class _HexKeyPadState extends State<HexKeyPad> {
 
   @override
   Widget build(BuildContext context) {
+    const String hex = "hex";
     NumButton button = NumButton(context, widget.onChangeInputData);
     ModeSwitch binaryMode =
         ModeSwitch(widget.setMode, "4", _switchStatus, _setStatus);
@@ -185,15 +188,15 @@ class _HexKeyPadState extends State<HexKeyPad> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("a"),
+                child: button.numButton("a", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("b"),
+                child: button.numButton("b", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("c"),
+                child: button.numButton("c", hex),
               )
             ],
           ),
@@ -202,15 +205,15 @@ class _HexKeyPadState extends State<HexKeyPad> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("d"),
+                child: button.numButton("d", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("e"),
+                child: button.numButton("e", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("f"),
+                child: button.numButton("f", hex),
               )
             ],
           ),
@@ -219,15 +222,15 @@ class _HexKeyPadState extends State<HexKeyPad> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("1"),
+                child: button.numButton("1", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("2"),
+                child: button.numButton("2", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("3"),
+                child: button.numButton("3", hex),
               )
             ],
           ),
@@ -236,30 +239,30 @@ class _HexKeyPadState extends State<HexKeyPad> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("4"),
+                child: button.numButton("4", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("5"),
+                child: button.numButton("5", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("6"),
+                child: button.numButton("6", hex),
               ),
             ],
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10),
-              child: button.numButton("7"),
+              child: button.numButton("7", hex),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: button.numButton("8"),
+              child: button.numButton("8", hex),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: button.numButton("9"),
+              child: button.numButton("9", hex),
             ),
           ]),
           Row(
@@ -271,7 +274,7 @@ class _HexKeyPadState extends State<HexKeyPad> {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: button.numButton("0"),
+                child: button.numButton("0", hex),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
