@@ -9,11 +9,9 @@ import 'package:simple_binary_converter/copy_button.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // ステータスバーの上部の変な半透明を消す
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-    )
-  );
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
   MobileAds.instance.initialize();
   runApp(const MyApp());
 }
@@ -70,25 +68,25 @@ class Calculation {
 
   //10 -> 2
   String convertDecimalToBinary(number) {
-    int num = number==""?0:int.parse(number);
+    int num = number == "" ? 0 : int.parse(number);
     return num.toRadixString(2);
   }
 
   //10->16
   String convertDecimalToHex(number) {
-    int num = number==""?0:int.parse(number);
+    int num = number == "" ? 0 : int.parse(number);
     return num.toRadixString(16);
   }
 
   // 16 -> 2
   String convertHexToBinary(hex) {
-    int num = hex==""?0:int.parse("0x" + hex);
+    int num = hex == "" ? 0 : int.parse("0x" + hex);
     return num.toRadixString(2);
   }
 
   // 16 -> 10
   String convertHexToDecimal(hex) {
-    int num = hex==""?0:int.parse("0x" + hex);
+    int num = hex == "" ? 0 : int.parse("0x" + hex);
     return num.toRadixString(10);
   }
 }
@@ -141,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void deleteInputData(String inputData) {
     setState(() {
       int length = inputData.length - 1;
-      _number = length >= 0  ? inputData.substring(0, length) : _number;
+      _number = length >= 0 ? inputData.substring(0, length) : _number;
     });
   }
 
@@ -177,9 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final BannerAd banner = BannerAd(
       size: size,
       request: request,
-      adUnitId: Platform.isAndroid
-          ? 'ca-app-pub-3940256099942544/6300978111'
-          : 'ca-app-pub-3940256099942544/2934735716',
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
       listener: BannerAdListener(
         onAdLoaded: (Ad ad) {
           print('$BannerAd loaded.');
@@ -206,7 +202,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     void setInputData(String inputData, String page) {
       if (_number.length >= 32 && page == "binary") {
         // show message
@@ -234,240 +229,237 @@ class _MyHomePageState extends State<MyHomePage> {
           _loadingAnchoredBanner = true;
           _createAnchoredBanner(context);
         }
-        return PageView(
-          onPageChanged: _onPageChanged,
-          scrollDirection: Axis.horizontal,
-          controller: controller,
+        return Column(
           children: <Widget>[
-            Scaffold(
-              body: Dismissible(
-                key: const Key('key'),
-                direction: DismissDirection.vertical,
-                confirmDismiss: (direction) async {
-                  if (direction == DismissDirection.up) {
-                    _clearNum();
-                  } else {
-                    if (_convertMode == "0") {
-                      _setResult(calculation.convertBinaryToDecimal(_number));
-                    } else if (_convertMode == "1") {
-                      _setResult(calculation.convertBinaryToHex(_number));
-                    }
-                  }
-                  return;
-                },
-                child: Column(
-                  children: <Widget>[
-                    if (_anchoredBanner != null)
-                      Container(
-                        color: Colors.green,
-                        width: _anchoredBanner!.size.width.toDouble(),
-                        height: _anchoredBanner!.size.height.toDouble(),
-                        child: AdWidget(ad: _anchoredBanner!),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: Container(
-                        height: 100,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              flex: 9,
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  _convertResult,
-                                  style: const TextStyle(fontSize: 30,),
+            Container(
+              color: Colors.white,
+              width: _anchoredBanner!.size.width.toDouble() + 40,
+              height: _anchoredBanner!.size.height.toDouble() + 40,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: AdWidget(ad: _anchoredBanner!),
+                )
+            ),
+            Expanded(
+              child: PageView(
+                onPageChanged: _onPageChanged,
+                scrollDirection: Axis.horizontal,
+                controller: controller,
+                children: <Widget>[
+                  Scaffold(
+                    body: Dismissible(
+                      key: const Key('key'),
+                      direction: DismissDirection.vertical,
+                      confirmDismiss: (direction) async {
+                        if (direction == DismissDirection.up) {
+                          _clearNum();
+                        } else {
+                          if (_convertMode == "0") {
+                            _setResult(
+                                calculation.convertBinaryToDecimal(_number));
+                          } else if (_convertMode == "1") {
+                            _setResult(calculation.convertBinaryToHex(_number));
+                          }
+                        }
+                        return;
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: Container(
+                              height: 100,
+                              child: Row(children: <Widget>[
+                                Expanded(
+                                    flex: 9,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        _convertResult,
+                                        style: const TextStyle(
+                                          fontSize: 30,
+                                        ),
+                                      ),
+                                    )),
+                                Expanded(
+                                  flex: 1,
+                                  child: copyButton.copyButton(_convertResult),
                                 ),
-                              )
+                              ]),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: copyButton.copyButton(_convertResult),
-                            ),
-                          ]
-                        ),
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 30)),
-                    Container(
-                      width: 350,
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              enabled: false,
-                              onChanged: _handleText,
-                              controller: TextEditingController(
-                                text: _number,
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 30)),
+                          Container(
+                            width: 350,
+                            child: Row(children: <Widget>[
+                              Flexible(
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
+                                  onChanged: _handleText,
+                                  controller: TextEditingController(
+                                    text: _number,
+                                  ),
+                                ),
                               ),
+                              IconButton(
+                                icon: const Icon(Icons.backspace_outlined),
+                                onPressed: () => deleteInputData(_number),
+                              ),
+                            ]),
+                          ),
+                          Expanded(
+                            child: FractionallySizedBox(
+                              widthFactor: 1.0,
+                              heightFactor: 0.8,
+                              alignment: const FractionalOffset(0.5, 0.4),
+                              child: binaryKeypad,
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.backspace_outlined),
-                            onPressed: () => deleteInputData(_number),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Scaffold(
+                    body: Dismissible(
+                      key: const Key('key2'),
+                      direction: DismissDirection.vertical,
+                      confirmDismiss: (direction) async {
+                        if (direction == DismissDirection.up) {
+                          _clearNum();
+                        } else {
+                          if (_convertMode == "2") {
+                            _setResult(
+                                calculation.convertDecimalToBinary(_number));
+                          } else if (_convertMode == "3") {
+                            _setResult(
+                                calculation.convertDecimalToHex(_number));
+                          }
+                        }
+                        return;
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 100,
+                            child: Row(children: <Widget>[
+                              Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      _convertResult,
+                                      style: const TextStyle(fontSize: 30),
+                                    ),
+                                  )),
+                              Expanded(
+                                flex: 1,
+                                child: copyButton.copyButton(_convertResult),
+                              ),
+                            ]),
                           ),
-                        ]
+                          Container(
+                            width: 350,
+                            child: Row(children: <Widget>[
+                              Flexible(
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
+                                  onChanged: _handleText,
+                                  controller: TextEditingController(
+                                    text: _number,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.backspace_outlined),
+                                onPressed: () => deleteInputData(_number),
+                              ),
+                            ]),
+                          ),
+                          Expanded(
+                            child: FractionallySizedBox(
+                              widthFactor: 1.0,
+                              heightFactor: 0.72,
+                              alignment: const FractionalOffset(0.5, 0.7),
+                              child: decimalKeypad,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      child: FractionallySizedBox(
-                        widthFactor: 1.0,
-                        heightFactor: 0.8,
-                        alignment: const FractionalOffset(0.5, 0.4),
-                        child: binaryKeypad,
+                  ),
+                  Scaffold(
+                    body: Dismissible(
+                      key: const Key('key3'),
+                      direction: DismissDirection.vertical,
+                      confirmDismiss: (direction) async {
+                        if (direction == DismissDirection.up) {
+                          _clearNum();
+                        } else {
+                          if (_convertMode == "4") {
+                            _setResult(calculation.convertHexToBinary(_number));
+                          } else if (_convertMode == "5") {
+                            _setResult(
+                                calculation.convertHexToDecimal(_number));
+                          }
+                        }
+                        return;
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 100,
+                            child: Row(children: <Widget>[
+                              Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      _convertResult,
+                                      style: const TextStyle(fontSize: 30),
+                                    ),
+                                  )),
+                              Expanded(
+                                flex: 1,
+                                child: copyButton.copyButton(_convertResult),
+                              ),
+                            ]),
+                          ),
+                          Container(
+                            width: 350,
+                            child: Row(children: <Widget>[
+                              Flexible(
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
+                                  onChanged: _handleText,
+                                  controller: TextEditingController(
+                                    text: _number,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.backspace_outlined),
+                                onPressed: () => deleteInputData(_number),
+                              ),
+                            ]),
+                          ),
+                          Expanded(
+                            child: FractionallySizedBox(
+                              widthFactor: 1.0,
+                              heightFactor: 1.0,
+                              // alignment: const FractionalOffset(0.5, 0.7),
+                              child: hexKeypad,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-            Scaffold(
-              body: Dismissible(
-                key: const Key('key2'),
-                direction: DismissDirection.vertical,
-                confirmDismiss: (direction) async {
-                  if (direction == DismissDirection.up) {
-                    _clearNum();
-                  } else {
-                    if (_convertMode == "2") {
-                      _setResult(calculation.convertDecimalToBinary(_number));
-                    } else if (_convertMode == "3") {
-                      _setResult(calculation.convertDecimalToHex(_number));
-                    }
-                  }
-                  return;
-                },
-                child: Column(
-                  children: <Widget>[
-                    const Padding(padding: EdgeInsets.only(bottom: 70)),
-                    Container(
-                      height: 100,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 9,
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                _convertResult,
-                                style: const TextStyle(fontSize: 30),
-                              ),
-                            )
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: copyButton.copyButton(_convertResult),
-                          ),
-                        ]
-                      ),
-                    ),
-                    Container(
-                      width: 350,
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              enabled: false,
-                              onChanged: _handleText,
-                              controller: TextEditingController(
-                                text: _number,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.backspace_outlined),
-                            onPressed: () => deleteInputData(_number),
-                          ),
-                        ]
-                      ),
-                    ),
-                    Expanded(
-                      child: FractionallySizedBox(
-                        widthFactor: 1.0,
-                        heightFactor: 0.72,
-                        alignment: const FractionalOffset(0.5, 0.7),
-                        child: decimalKeypad,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Scaffold(
-              body: Dismissible(
-                key: const Key('key3'),
-                direction: DismissDirection.vertical,
-                confirmDismiss: (direction) async {
-                  if (direction == DismissDirection.up) {
-                    _clearNum();
-                  } else {
-                    if (_convertMode == "4") {
-                      _setResult(calculation.convertHexToBinary(_number));
-                    } else if (_convertMode == "5") {
-                      _setResult(calculation.convertHexToDecimal(_number));
-                    }
-                  }
-                  return;
-                },
-                child: Column(
-                  children: <Widget>[
-                    const Padding(padding: EdgeInsets.only(bottom: 70)),
-                    Container(
-                      height: 100,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 9,
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                _convertResult,
-                                style: const TextStyle(fontSize: 30),
-                              ),
-                            )
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: copyButton.copyButton(_convertResult),
-                          ),
-                        ]
-                      ),
-                    ),
-                    Container(
-                      width: 350,
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              enabled: false,
-                              onChanged: _handleText,
-                              controller: TextEditingController(
-                                text: _number,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.backspace_outlined),
-                            onPressed: () => deleteInputData(_number),
-                          ),
-                        ]
-                      ),
-                    ),
-                    Expanded(
-                      child: FractionallySizedBox(
-                        widthFactor: 1.0,
-                        heightFactor: 1.0,
-                        // alignment: const FractionalOffset(0.5, 0.7),
-                        child: hexKeypad,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            )
           ],
         );
       }),
