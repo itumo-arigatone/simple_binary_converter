@@ -3,7 +3,6 @@ import "dart:math";
 import 'package:flutter/services.dart';
 import 'package:simple_binary_converter/keypad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'dart:io' show Platform;
 import 'package:simple_binary_converter/copy_button.dart';
 
 void main() {
@@ -231,15 +230,16 @@ class _MyHomePageState extends State<MyHomePage> {
         }
         return Column(
           children: <Widget>[
-            Container(
-              color: Colors.white,
-              width: _anchoredBanner!.size.width.toDouble() + 40,
-              height: _anchoredBanner!.size.height.toDouble() + 40,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: AdWidget(ad: _anchoredBanner!),
-                )
-            ),
+            if (_anchoredBanner != null)
+              Container(
+                color: Colors.white,
+                width: _anchoredBanner!.size.width.toDouble(),
+                height: _anchoredBanner!.size.height.toDouble() + 40,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: AdWidget(ad: _anchoredBanner!),
+                  )
+              ),
             Expanded(
               child: PageView(
                 onPageChanged: _onPageChanged,
