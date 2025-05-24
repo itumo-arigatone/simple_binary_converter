@@ -5,7 +5,9 @@ class ModeSwitch extends StatefulWidget {
   final Function() setStatus;
   final String mode;
   final bool status;
-  ModeSwitch(this.setMode, this.mode, this.status, this.setStatus);
+  const ModeSwitch(this.setMode, this.mode, this.status, this.setStatus,
+      {Key? key})
+      : super(key: key);
   @override
   _ModeSwitchState createState() => _ModeSwitchState();
 }
@@ -46,14 +48,14 @@ class _ModeSwitchState extends State<ModeSwitch> {
         child: Text(
           // String?ってなんだろう。。Stringとは違うらしい
           mode.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 15,
           ),
         ),
         style: ElevatedButton.styleFrom(
-          primary: primaryColor,
-          onPrimary: Colors.black,
-          side: BorderSide(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.black,
+          side: const BorderSide(
             color: Colors.black,
             width: 2,
           ),

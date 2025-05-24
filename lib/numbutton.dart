@@ -9,7 +9,7 @@ class NumButton {
   Text buttonStyle(String num) {
     return Text(
       num,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 35,
       ),
     );
@@ -25,9 +25,9 @@ class NumButton {
       child: buttonStyle(num),
       onPressed: () => onChangeInputData(num, page),
       style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black,
         fixedSize: Size(buttonSize, buttonSize),
-        primary: Colors.white,
-        onPrimary: Colors.black,
+        backgroundColor: Colors.white,
         shape: const CircleBorder(
           side: BorderSide(
             color: Colors.black,
@@ -49,15 +49,15 @@ class NumButton {
       child: buttonStyle(num),
       onPressed: () => onChangeInputData(num, page),
       style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black,
         fixedSize: Size(buttonSize, buttonSize),
-        primary: Colors.white,
-        onPrimary: Colors.black,
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(45),
-          side: BorderSide(
+          side: const BorderSide(
             width: 3,
             color: Colors.black,
-            style: BorderStyle.solid,  
+            style: BorderStyle.solid,
           ),
         ),
       ),

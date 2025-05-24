@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _convertResult = "";
   BannerAd? _anchoredBanner;
   bool _loadingAnchoredBanner = false;
-  static final AdRequest request = AdRequest();
+  static const AdRequest request = AdRequest();
 
   /*
   convertMode
@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Text buttonStyle(String num) {
     return Text(
       num,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 35,
       ),
     );
@@ -232,14 +232,13 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             if (_anchoredBanner != null)
               Container(
-                color: Colors.white,
-                width: _anchoredBanner!.size.width.toDouble(),
-                height: _anchoredBanner!.size.height.toDouble() + 40,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: AdWidget(ad: _anchoredBanner!),
-                  )
-              ),
+                  color: Colors.white,
+                  width: _anchoredBanner!.size.width.toDouble(),
+                  height: _anchoredBanner!.size.height.toDouble() + 40,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: AdWidget(ad: _anchoredBanner!),
+                  )),
             Expanded(
               child: PageView(
                 onPageChanged: _onPageChanged,
@@ -267,7 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(top: 40),
-                            child: Container(
+                            child: SizedBox(
                               height: 100,
                               child: Row(children: <Widget>[
                                 Expanded(
@@ -289,7 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(top: 30)),
-                          Container(
+                          SizedBox(
                             width: 350,
                             child: Row(children: <Widget>[
                               Flexible(
@@ -340,7 +339,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       child: Column(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                             height: 100,
                             child: Row(children: <Widget>[
                               Expanded(
@@ -358,7 +357,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ]),
                           ),
-                          Container(
+                          SizedBox(
                             width: 350,
                             child: Row(children: <Widget>[
                               Flexible(
@@ -408,7 +407,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       child: Column(
                         children: <Widget>[
-                          Container(
+                          SizedBox(
                             height: 100,
                             child: Row(children: <Widget>[
                               Expanded(
@@ -426,7 +425,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ]),
                           ),
-                          Container(
+                          SizedBox(
                             width: 350,
                             child: Row(children: <Widget>[
                               Flexible(

@@ -5,7 +5,8 @@ import 'package:simple_binary_converter/mode_select_switch.dart';
 class BinaryKeyPad extends StatefulWidget {
   final Function(String mode) setMode;
   final Function(String inputData, String page) onChangeInputData;
-  BinaryKeyPad(this.onChangeInputData, this.setMode);
+  const BinaryKeyPad(this.onChangeInputData, this.setMode, {Key? key})
+      : super(key: key);
   @override
   _BinaryKeyPadState createState() => _BinaryKeyPadState();
 }
@@ -13,7 +14,8 @@ class BinaryKeyPad extends StatefulWidget {
 class DecimalKeyPad extends StatefulWidget {
   final Function(String mode) setMode;
   final Function(String inputData, String page) onChangeInputData;
-  DecimalKeyPad(this.onChangeInputData, this.setMode);
+  const DecimalKeyPad(this.onChangeInputData, this.setMode, {Key? key})
+      : super(key: key);
   @override
   _DecimalKeyPadState createState() => _DecimalKeyPadState();
 }
@@ -21,7 +23,8 @@ class DecimalKeyPad extends StatefulWidget {
 class HexKeyPad extends StatefulWidget {
   final Function(String mode) setMode;
   final Function(String inputData, String page) onChangeInputData;
-  HexKeyPad(this.onChangeInputData, this.setMode);
+  const HexKeyPad(this.onChangeInputData, this.setMode, {Key? key})
+      : super(key: key);
   @override
   _HexKeyPadState createState() => _HexKeyPadState();
 }
