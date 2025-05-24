@@ -5,8 +5,8 @@
 10 -> 2  
 10 -> 16  
 16 -> 2  
-16 -> 10  
-  
+16 -> 10
+
 Currently, minus and decirl point cannot be used.
 <a href='https://play.google.com/store/apps/details?id=com.unkomorasi01.simple_binary_converter&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='doc/google-play-badge.png'/></a>
 
@@ -24,6 +24,9 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 # memo
+
 ```sh
+keytool -genkey -v -keystore C:Users\your_username\development\my_release_key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias key
+
 flutter build appbundle
 ```
