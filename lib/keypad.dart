@@ -4,35 +4,22 @@ import 'package:simple_binary_converter/mode_select_switch.dart';
 
 // 共通のキーパッドレイアウトを構築するヘルパー
 class KeypadLayout {
-  final BuildContext context;
   final Function(String inputData, String page) onChangeInputData;
   final String page;
 
   KeypadLayout({
-    required this.context,
     required this.onChangeInputData,
     required this.page,
   });
 
-  double get _buttonSize {
-    final size = MediaQuery.of(context).size;
-    final smaller = size.height > size.width ? size.width : size.height;
-    return smaller * 0.12;
-  }
-
-  double get _largeButtonSize {
-    final size = MediaQuery.of(context).size;
-    final smaller = size.height > size.width ? size.width : size.height;
-    return smaller * 0.35;
-  }
-
-  double get _modeSwitchWidth {
-    final size = MediaQuery.of(context).size;
-    final smaller = size.height > size.width ? size.width : size.height;
-    return smaller * 0.22;
-  }
-
-  double get _modeSwitchHeight => _buttonSize;
+  // 固定サイズ
+  static const double _buttonSize = 70.0;
+  static const double _smallButtonSize = 56.0;
+  static const double _largeButtonSize = 130.0;
+  static const double _modeSwitchWidth = 90.0;
+  static const double _smallModeSwitchWidth = 72.0;
+  static const double _modeSwitchHeight = 42.0;
+  static const double _smallModeSwitchHeight = 34.0;
 
   Widget buildNumButton(String label) {
     return Padding(
@@ -42,6 +29,18 @@ class KeypadLayout {
         page: page,
         onPressed: () => onChangeInputData(label, page),
         size: _buttonSize,
+      ),
+    );
+  }
+
+  Widget buildSmallNumButton(String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+      child: NumButton(
+        label: label,
+        page: page,
+        onPressed: () => onChangeInputData(label, page),
+        size: _smallButtonSize,
       ),
     );
   }
@@ -71,6 +70,23 @@ class KeypadLayout {
         onPressed: onPressed,
         width: _modeSwitchWidth,
         height: _modeSwitchHeight,
+      ),
+    );
+  }
+
+  Widget buildSmallModeSwitch({
+    required String label,
+    required bool isActive,
+    required VoidCallback onPressed,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+      child: ModeSwitch(
+        label: label,
+        isActive: isActive,
+        onPressed: onPressed,
+        width: _smallModeSwitchWidth,
+        height: _smallModeSwitchHeight,
       ),
     );
   }
@@ -107,7 +123,6 @@ class _BinaryKeyPadState extends State<BinaryKeyPad> {
   @override
   Widget build(BuildContext context) {
     final layout = KeypadLayout(
-      context: context,
       onChangeInputData: widget.onChangeInputData,
       page: "binary",
     );
@@ -167,7 +182,6 @@ class _DecimalKeyPadState extends State<DecimalKeyPad> {
   @override
   Widget build(BuildContext context) {
     final layout = KeypadLayout(
-      context: context,
       onChangeInputData: widget.onChangeInputData,
       page: "decimal",
     );
@@ -238,7 +252,6 @@ class _HexKeyPadState extends State<HexKeyPad> {
   @override
   Widget build(BuildContext context) {
     final layout = KeypadLayout(
-      context: context,
       onChangeInputData: widget.onChangeInputData,
       page: "hex",
     );
@@ -247,32 +260,32 @@ class _HexKeyPadState extends State<HexKeyPad> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         layout.buildRow([
-          layout.buildNumButton("A"),
-          layout.buildNumButton("B"),
-          layout.buildNumButton("C"),
+          layout.buildSmallNumButton("A"),
+          layout.buildSmallNumButton("B"),
+          layout.buildSmallNumButton("C"),
         ]),
         layout.buildRow([
-          layout.buildNumButton("D"),
-          layout.buildNumButton("E"),
-          layout.buildNumButton("F"),
+          layout.buildSmallNumButton("D"),
+          layout.buildSmallNumButton("E"),
+          layout.buildSmallNumButton("F"),
         ]),
         layout.buildRow([
-          layout.buildNumButton("1"),
-          layout.buildNumButton("2"),
-          layout.buildNumButton("3"),
+          layout.buildSmallNumButton("1"),
+          layout.buildSmallNumButton("2"),
+          layout.buildSmallNumButton("3"),
         ]),
         layout.buildRow([
-          layout.buildNumButton("4"),
-          layout.buildNumButton("5"),
-          layout.buildNumButton("6"),
+          layout.buildSmallNumButton("4"),
+          layout.buildSmallNumButton("5"),
+          layout.buildSmallNumButton("6"),
         ]),
         layout.buildRow([
-          layout.buildNumButton("7"),
-          layout.buildNumButton("8"),
-          layout.buildNumButton("9"),
+          layout.buildSmallNumButton("7"),
+          layout.buildSmallNumButton("8"),
+          layout.buildSmallNumButton("9"),
         ]),
         layout.buildRow([
-          layout.buildModeSwitch(
+          layout.buildSmallModeSwitch(
             label: "to binary",
             isActive: _isBinaryMode,
             onPressed: () {
@@ -280,8 +293,8 @@ class _HexKeyPadState extends State<HexKeyPad> {
               widget.setMode("4");
             },
           ),
-          layout.buildNumButton("0"),
-          layout.buildModeSwitch(
+          layout.buildSmallNumButton("0"),
+          layout.buildSmallModeSwitch(
             label: "to decimal",
             isActive: !_isBinaryMode,
             onPressed: () {

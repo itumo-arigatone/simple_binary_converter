@@ -16,6 +16,9 @@ class NumButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ボタンサイズに応じてフォントサイズを調整
+    final fontSize = size * 0.38;
+    
     return SizedBox(
       width: size,
       height: size,
@@ -36,8 +39,8 @@ class NumButton extends StatelessWidget {
           child: Text(
             label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 28,
+            style: TextStyle(
+              fontSize: fontSize,
               fontWeight: FontWeight.w500,
             ),
           ),
