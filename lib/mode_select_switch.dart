@@ -1,63 +1,44 @@
 import 'package:flutter/material.dart';
 
-class ModeSwitch extends StatefulWidget {
-  final Function(String mode) setMode;
-  final Function() setStatus;
-  final String mode;
-  final bool status;
-  const ModeSwitch(this.setMode, this.mode, this.status, this.setStatus,
-      {Key? key})
-      : super(key: key);
-  @override
-  _ModeSwitchState createState() => _ModeSwitchState();
-}
+class ModeSwitch extends StatelessWidget {
+  final String label;
+  final bool isActive;
+  final VoidCallback onPressed;
+  final double width;
+  final double height;
 
-class _ModeSwitchState extends State<ModeSwitch> {
-  bool isPressed = false;
-  Color primaryColor = Colors.white;
-  Map<String, String> modeDecimal = {
-    "0": "to decimal", // binary
-    "1": "to hex", // binary
-    "2": "to binary", // decimal
-    "3": "to hex", // decimal
-    "4": "to binary", // hex
-    "5": "to decimal", // hex
-  };
-
-  void pressed() {
-    widget.setStatus();
-    setState(() {
-      widget.setMode(widget.mode);
-    });
-  }
+  const ModeSwitch({
+    Key? key,
+    required this.label,
+    required this.isActive,
+    required this.onPressed,
+    required this.width,
+    required this.height,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String? mode = modeDecimal[widget.mode];
-    Size screenSize = MediaQuery.of(context).size;
-    double height = screenSize.height * 0.72;
-    double width = screenSize.width;
-    double smaller = height > width ? width : height;
-    double buttonSizeHight = smaller * 0.13;
-    double buttonSizeWidth = smaller * 0.22;
     return SizedBox(
-      width: buttonSizeWidth,
-      height: buttonSizeHight,
+      width: width,
+      height: height,
       child: ElevatedButton(
-        onPressed: widget.status ? pressed : null,
-        child: Text(
-          // String?ってなんだろう。。Stringとは違うらしい
-          mode.toString(),
-          style: const TextStyle(
-            fontSize: 15,
-          ),
-        ),
+        onPressed: isActive ? onPressed : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
+          backgroundColor: Colors.white,
           foregroundColor: Colors.black,
+          disabledBackgroundColor: Colors.grey[300],
+          disabledForegroundColor: Colors.grey[600],
+          padding: EdgeInsets.zero,
           side: const BorderSide(
             color: Colors.black,
             width: 2,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14),
           ),
         ),
       ),

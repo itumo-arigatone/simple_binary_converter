@@ -1,63 +1,93 @@
 import 'package:flutter/material.dart';
 
-class NumButton {
-  late BuildContext context;
-  final Function(String inputData, String page) onChangeInputData;
+class NumButton extends StatelessWidget {
+  final String label;
+  final String page;
+  final VoidCallback onPressed;
+  final double size;
 
-  NumButton(this.context, this.onChangeInputData);
+  const NumButton({
+    Key? key,
+    required this.label,
+    required this.page,
+    required this.onPressed,
+    required this.size,
+  }) : super(key: key);
 
-  Text buttonStyle(String num) {
-    return Text(
-      num,
-      style: const TextStyle(
-        fontSize: 35,
-      ),
-    );
-  }
-
-  ElevatedButton numButton(String num, String page) {
-    Size screenSize = MediaQuery.of(context).size;
-    double height = screenSize.height * 0.72;
-    double width = screenSize.width;
-    double smaller = height > width ? width : height;
-    double buttonSize = smaller * 0.13;
-    return ElevatedButton(
-      child: buttonStyle(num),
-      onPressed: () => onChangeInputData(num, page),
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        fixedSize: Size(buttonSize, buttonSize),
-        backgroundColor: Colors.white,
-        shape: const CircleBorder(
-          side: BorderSide(
-            color: Colors.black,
-            width: 3,
-            style: BorderStyle.solid,
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          padding: EdgeInsets.zero,
+          shape: const CircleBorder(
+            side: BorderSide(
+              color: Colors.black,
+              width: 3,
+            ),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ),
     );
   }
+}
 
-  ElevatedButton largeButton(String num, String page) {
-    Size screenSize = MediaQuery.of(context).size;
-    double height = screenSize.height * 0.72;
-    double width = screenSize.width;
-    double smaller = height > width ? width : height;
-    double buttonSize = smaller * 0.40;
-    return ElevatedButton(
-      child: buttonStyle(num),
-      onPressed: () => onChangeInputData(num, page),
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        fixedSize: Size(buttonSize, buttonSize),
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(45),
-          side: const BorderSide(
-            width: 3,
-            color: Colors.black,
-            style: BorderStyle.solid,
+class LargeNumButton extends StatelessWidget {
+  final String label;
+  final String page;
+  final VoidCallback onPressed;
+  final double size;
+
+  const LargeNumButton({
+    Key? key,
+    required this.label,
+    required this.page,
+    required this.onPressed,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(45),
+            side: const BorderSide(
+              width: 3,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 35,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ),
