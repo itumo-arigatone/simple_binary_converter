@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "dart:math";
 import 'package:flutter/services.dart';
 import 'package:simple_binary_converter/keypad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -42,50 +41,48 @@ class MyHomePage extends StatefulWidget {
 
 class Calculation {
   // 2 -> 16
-  String convertBinaryToHex(binary) {
+  String convertBinaryToHex(String binary) {
+    if (binary.isEmpty) return "0";
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
-    List<String> numArray = removeZero.split("");
-    num deci = 0;
-    for (int i = 0; i < numArray.length; i++) {
-      deci += int.parse(numArray[i]) * pow(2, (numArray.length - i - 1));
-    }
-    deci as int;
+    if (removeZero.isEmpty) return "0";
+    BigInt deci = BigInt.parse(removeZero, radix: 2);
     return deci.toRadixString(16);
   }
 
   // 2 -> 10
-  String convertBinaryToDecimal(binary) {
+  String convertBinaryToDecimal(String binary) {
+    if (binary.isEmpty) return "0";
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
-    List<String> numArray = removeZero.split("");
-    num deci = 0;
-    for (int i = 0; i < numArray.length; i++) {
-      deci += int.parse(numArray[i]) * pow(2, (numArray.length - i - 1));
-    }
-    deci as int;
+    if (removeZero.isEmpty) return "0";
+    BigInt deci = BigInt.parse(removeZero, radix: 2);
     return deci.toRadixString(10);
   }
 
-  //10 -> 2
-  String convertDecimalToBinary(number) {
-    int num = number == "" ? 0 : int.parse(number);
+  // 10 -> 2
+  String convertDecimalToBinary(String number) {
+    if (number.isEmpty) return "0";
+    BigInt num = BigInt.parse(number);
     return num.toRadixString(2);
   }
 
-  //10->16
-  String convertDecimalToHex(number) {
-    int num = number == "" ? 0 : int.parse(number);
+  // 10 -> 16
+  String convertDecimalToHex(String number) {
+    if (number.isEmpty) return "0";
+    BigInt num = BigInt.parse(number);
     return num.toRadixString(16);
   }
 
   // 16 -> 2
-  String convertHexToBinary(hex) {
-    int num = hex == "" ? 0 : int.parse("0x" + hex);
+  String convertHexToBinary(String hex) {
+    if (hex.isEmpty) return "0";
+    BigInt num = BigInt.parse(hex, radix: 16);
     return num.toRadixString(2);
   }
 
   // 16 -> 10
-  String convertHexToDecimal(hex) {
-    int num = hex == "" ? 0 : int.parse("0x" + hex);
+  String convertHexToDecimal(String hex) {
+    if (hex.isEmpty) return "0";
+    BigInt num = BigInt.parse(hex, radix: 16);
     return num.toRadixString(10);
   }
 }
@@ -202,11 +199,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     void setInputData(String inputData, String page) {
-      if (_number.length >= 32 && page == "binary") {
+      if (_number.length >= 64 && page == "binary") {
         // show message
-      } else if (_number.length >= 18 && page == "decimal") {
+      } else if (_number.length >= 32 && page == "decimal") {
         // show message
-      } else if (_number.length >= 15 && page == "hex") {
+      } else if (_number.length >= 32 && page == "hex") {
         // show message
       } else {
         setState(() {
