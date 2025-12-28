@@ -315,32 +315,56 @@ class _ConverterPageState extends State<ConverterPage> {
   }
 
   Widget _buildInputArea() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  child: Text(
+                    _number.isEmpty ? " " : _number,
+                    style: const TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-              child: Text(
-                _number.isEmpty ? " " : _number,
-                style: const TextStyle(fontSize: 20),
-                textAlign: TextAlign.center,
+              IconButton(
+                icon: const Icon(Icons.backspace_outlined),
+                onPressed: _deleteLastInput,
+                tooltip: "Delete",
               ),
-            ),
+            ],
           ),
-          IconButton(
-            icon: const Icon(Icons.backspace_outlined),
-            onPressed: _deleteLastInput,
-            tooltip: "Delete",
+        ),
+        // スワイプヒント
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.swipe_up, size: 16, color: Colors.grey.shade400),
+              Text(
+                " Clear",
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade400),
+              ),
+              const SizedBox(width: 16),
+              Icon(Icons.swipe_down, size: 16, color: Colors.grey.shade400),
+              Text(
+                " Convert",
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade400),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
