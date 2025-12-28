@@ -18,8 +18,15 @@ class ModeSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('ModeSwitch build: $label, isActive: $isActive');
     return GestureDetector(
-      onTap: isActive ? onPressed : null,
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        print('ModeSwitch tapped: $label, isActive: $isActive');
+        if (!isActive) {
+          onPressed();
+        }
+      },
       child: Container(
         width: width,
         height: height,
@@ -28,7 +35,16 @@ class ModeSwitch extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: isActive
               ? [
-                  // アクティブ: 浮き出し
+                  // アクティブ: 押し込み（選択中）
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    offset: const Offset(2, 2),
+                    blurRadius: 4,
+                    spreadRadius: -2,
+                  ),
+                ]
+              : [
+                  // 非アクティブ: 浮き出し（未選択）
                   BoxShadow(
                     color: Colors.grey.shade400,
                     offset: const Offset(3, 3),
@@ -41,15 +57,6 @@ class ModeSwitch extends StatelessWidget {
                     blurRadius: 6,
                     spreadRadius: 1,
                   ),
-                ]
-              : [
-                  // 非アクティブ: 押し込み
-                  BoxShadow(
-                    color: Colors.grey.shade300,
-                    offset: const Offset(2, 2),
-                    blurRadius: 4,
-                    spreadRadius: -2,
-                  ),
                 ],
         ),
         child: Center(
@@ -59,7 +66,7 @@ class ModeSwitch extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: isActive ? Colors.grey.shade700 : Colors.grey.shade400,
+              color: isActive ? Colors.grey.shade400 : Colors.grey.shade700,
             ),
           ),
         ),

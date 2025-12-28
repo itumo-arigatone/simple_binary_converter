@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:simple_binary_converter/keypads/keypad_layout.dart';
 
-class HexKeyPad extends StatefulWidget {
+class HexKeyPad extends StatelessWidget {
   final Function(String mode) setMode;
   final Function(String inputData, String page) onChangeInputData;
+  final String currentMode;
 
-  const HexKeyPad(this.onChangeInputData, this.setMode, {Key? key})
+  const HexKeyPad(this.onChangeInputData, this.setMode, {Key? key, required this.currentMode})
       : super(key: key);
-
-  @override
-  State<HexKeyPad> createState() => _HexKeyPadState();
-}
-
-class _HexKeyPadState extends State<HexKeyPad> {
-  bool _isBinaryMode = true;
-
-  void _toggleMode() {
-    setState(() {
-      _isBinaryMode = !_isBinaryMode;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final layout = KeypadLayout(
-      onChangeInputData: widget.onChangeInputData,
+      onChangeInputData: onChangeInputData,
       page: "hex",
     );
+
+    // "4" = to binary, "5" = to decimal
+    final isBinaryMode = currentMode == "4";
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -59,19 +50,17 @@ class _HexKeyPadState extends State<HexKeyPad> {
         layout.buildRow([
           layout.buildSmallModeSwitch(
             label: "to binary",
-            isActive: _isBinaryMode,
+            isActive: isBinaryMode,
             onPressed: () {
-              _toggleMode();
-              widget.setMode("4");
+              setMode("4");
             },
           ),
           layout.buildSmallNumButton("0"),
           layout.buildSmallModeSwitch(
             label: "to decimal",
-            isActive: !_isBinaryMode,
+            isActive: !isBinaryMode,
             onPressed: () {
-              _toggleMode();
-              widget.setMode("5");
+              setMode("5");
             },
           ),
         ]),

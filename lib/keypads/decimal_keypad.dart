@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:simple_binary_converter/keypads/keypad_layout.dart';
 
-class DecimalKeyPad extends StatefulWidget {
+class DecimalKeyPad extends StatelessWidget {
   final Function(String mode) setMode;
   final Function(String inputData, String page) onChangeInputData;
+  final String currentMode;
 
-  const DecimalKeyPad(this.onChangeInputData, this.setMode, {Key? key})
+  const DecimalKeyPad(this.onChangeInputData, this.setMode, {Key? key, required this.currentMode})
       : super(key: key);
-
-  @override
-  State<DecimalKeyPad> createState() => _DecimalKeyPadState();
-}
-
-class _DecimalKeyPadState extends State<DecimalKeyPad> {
-  bool _isBinaryMode = true;
-
-  void _toggleMode() {
-    setState(() {
-      _isBinaryMode = !_isBinaryMode;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final layout = KeypadLayout(
-      onChangeInputData: widget.onChangeInputData,
+      onChangeInputData: onChangeInputData,
       page: "decimal",
     );
+
+    // "2" = to binary, "3" = to hex
+    final isBinaryMode = currentMode == "2";
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -49,19 +40,17 @@ class _DecimalKeyPadState extends State<DecimalKeyPad> {
         layout.buildRow([
           layout.buildModeSwitch(
             label: "to binary",
-            isActive: _isBinaryMode,
+            isActive: isBinaryMode,
             onPressed: () {
-              _toggleMode();
-              widget.setMode("2");
+              setMode("2");
             },
           ),
           layout.buildNumButton("0"),
           layout.buildModeSwitch(
             label: "to hex",
-            isActive: !_isBinaryMode,
+            isActive: !isBinaryMode,
             onPressed: () {
-              _toggleMode();
-              widget.setMode("3");
+              setMode("3");
             },
           ),
         ]),

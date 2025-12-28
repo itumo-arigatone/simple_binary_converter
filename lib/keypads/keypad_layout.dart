@@ -14,7 +14,7 @@ class KeypadLayout {
 
   // 固定サイズ
   static const double _buttonSize = 70.0;
-  static const double _smallButtonSize = 56.0;
+  static const double _smallButtonSize = 64.0;
   static const double _largeButtonSize = 130.0;
   static const double _modeSwitchWidth = 90.0;
   static const double _smallModeSwitchWidth = 72.0;
@@ -35,7 +35,7 @@ class KeypadLayout {
 
   Widget buildSmallNumButton(String label) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: NumButton(
         label: label,
         page: page,
@@ -80,7 +80,7 @@ class KeypadLayout {
     required VoidCallback onPressed,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: ModeSwitch(
         label: label,
         isActive: isActive,
