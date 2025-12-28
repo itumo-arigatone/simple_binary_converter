@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: "Simple binary converter",
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: const Color(0xFFF0F0F3),
       ),
       home: const ConverterPage(),
     );
@@ -232,13 +232,16 @@ class _ConverterPageState extends State<ConverterPage> {
                 onPageChanged: _onPageChanged,
                 children: [
                   _buildConverterPanel(
-                    keypad: BinaryKeyPad(_addInput, _setConvertMode),
+                    panelKey: 'binary',
+                    keypad: BinaryKeyPad(_addInput, _setConvertMode, currentMode: _convertMode),
                   ),
                   _buildConverterPanel(
-                    keypad: DecimalKeyPad(_addInput, _setConvertMode),
+                    panelKey: 'decimal',
+                    keypad: DecimalKeyPad(_addInput, _setConvertMode, currentMode: _convertMode),
                   ),
                   _buildConverterPanel(
-                    keypad: HexKeyPad(_addInput, _setConvertMode),
+                    panelKey: 'hex',
+                    keypad: HexKeyPad(_addInput, _setConvertMode, currentMode: _convertMode),
                   ),
                 ],
               ),
@@ -249,21 +252,22 @@ class _ConverterPageState extends State<ConverterPage> {
     );
   }
 
-  Widget _buildConverterPanel({required Widget keypad}) {
-    return GestureDetector(
-      onVerticalDragEnd: (details) {
-        if (details.primaryVelocity != null) {
-          if (details.primaryVelocity! < 0) {
-            // 上スワイプ: クリア
-            _clearInput();
-          } else if (details.primaryVelocity! > 0) {
-            // 下スワイプ: 変換
-            _convert();
-          }
+  Widget _buildConverterPanel({required Widget keypad, required String panelKey}) {
+    return Dismissible(
+      key: ValueKey(panelKey),
+      direction: DismissDirection.vertical,
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.up) {
+          // 上スワイプ: クリア
+          _clearInput();
+        } else {
+          // 下スワイプ: 変換
+          _convert();
         }
+        return false; // 実際には削除しない
       },
       child: Container(
-        color: Colors.white,
+        color: const Color(0xFFF0F0F3),
         child: Column(
           children: [
             // 結果表示エリア

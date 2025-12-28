@@ -18,27 +18,56 @@ class ModeSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: ElevatedButton(
-        onPressed: isActive ? onPressed : null,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          disabledBackgroundColor: Colors.grey[300],
-          disabledForegroundColor: Colors.grey[600],
-          padding: EdgeInsets.zero,
-          side: const BorderSide(
-            color: Colors.black,
-            width: 2,
-          ),
+    print('ModeSwitch build: $label, isActive: $isActive');
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        print('ModeSwitch tapped: $label, isActive: $isActive');
+        if (!isActive) {
+          onPressed();
+        }
+      },
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0F0F3),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: isActive
+              ? [
+                  // アクティブ: 押し込み（選択中）
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    offset: const Offset(2, 2),
+                    blurRadius: 4,
+                    spreadRadius: -2,
+                  ),
+                ]
+              : [
+                  // 非アクティブ: 浮き出し（未選択）
+                  BoxShadow(
+                    color: Colors.grey.shade400,
+                    offset: const Offset(3, 3),
+                    blurRadius: 6,
+                    spreadRadius: 1,
+                  ),
+                  const BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-3, -3),
+                    blurRadius: 6,
+                    spreadRadius: 1,
+                  ),
+                ],
         ),
         child: Center(
           child: Text(
             label,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14),
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: isActive ? Colors.grey.shade400 : Colors.grey.shade700,
+            ),
           ),
         ),
       ),

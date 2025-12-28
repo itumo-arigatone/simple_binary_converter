@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NumButton extends StatelessWidget {
+class NumButton extends StatefulWidget {
   final String label;
   final String page;
   final VoidCallback onPressed;
@@ -15,33 +15,63 @@ class NumButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<NumButton> createState() => _NumButtonState();
+}
+
+class _NumButtonState extends State<NumButton> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    // ボタンサイズに応じてフォントサイズを調整
-    final fontSize = size * 0.38;
-    
-    return SizedBox(
-      width: size,
-      height: size,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          padding: EdgeInsets.zero,
-          shape: const CircleBorder(
-            side: BorderSide(
-              color: Colors.black,
-              width: 3,
-            ),
-          ),
+    final fontSize = widget.size * 0.38;
+
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onPressed();
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: Container(
+        width: widget.size,
+        height: widget.size,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0F0F3),
+          shape: BoxShape.circle,
+          boxShadow: _isPressed
+              ? [
+                  // 押し込み
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    offset: const Offset(2, 2),
+                    blurRadius: 4,
+                    spreadRadius: -2,
+                  ),
+                ]
+              : [
+                  // 浮き出し
+                  BoxShadow(
+                    color: Colors.grey.shade400,
+                    offset: const Offset(4, 4),
+                    blurRadius: 8,
+                    spreadRadius: 1,
+                  ),
+                  const BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-4, -4),
+                    blurRadius: 8,
+                    spreadRadius: 1,
+                  ),
+                ],
         ),
         child: Center(
           child: Text(
-            label,
+            widget.label,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: fontSize,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade700,
             ),
           ),
         ),
@@ -50,7 +80,7 @@ class NumButton extends StatelessWidget {
   }
 }
 
-class LargeNumButton extends StatelessWidget {
+class LargeNumButton extends StatefulWidget {
   final String label;
   final String page;
   final VoidCallback onPressed;
@@ -65,31 +95,61 @@ class LargeNumButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<LargeNumButton> createState() => _LargeNumButtonState();
+}
+
+class _LargeNumButtonState extends State<LargeNumButton> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(45),
-            side: const BorderSide(
-              width: 3,
-              color: Colors.black,
-            ),
-          ),
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onPressed();
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: Container(
+        width: widget.size,
+        height: widget.size,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0F0F3),
+          borderRadius: BorderRadius.circular(40),
+          boxShadow: _isPressed
+              ? [
+                  // 押し込み
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    offset: const Offset(3, 3),
+                    blurRadius: 6,
+                    spreadRadius: -2,
+                  ),
+                ]
+              : [
+                  // 浮き出し
+                  BoxShadow(
+                    color: Colors.grey.shade400,
+                    offset: const Offset(6, 6),
+                    blurRadius: 12,
+                    spreadRadius: 1,
+                  ),
+                  const BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-6, -6),
+                    blurRadius: 12,
+                    spreadRadius: 1,
+                  ),
+                ],
         ),
         child: Center(
           child: Text(
-            label,
+            widget.label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 35,
-              fontWeight: FontWeight.w500,
+            style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade700,
             ),
           ),
         ),
