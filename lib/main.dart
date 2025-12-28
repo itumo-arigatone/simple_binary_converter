@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: "Simple binary converter",
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: const Color(0xFFF0F0F3),
       ),
       home: const ConverterPage(),
     );
@@ -251,6 +251,7 @@ class _ConverterPageState extends State<ConverterPage> {
 
   Widget _buildConverterPanel({required Widget keypad}) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onVerticalDragEnd: (details) {
         if (details.primaryVelocity != null) {
           if (details.primaryVelocity! < 0) {
@@ -263,7 +264,7 @@ class _ConverterPageState extends State<ConverterPage> {
         }
       },
       child: Container(
-        color: Colors.white,
+        color: const Color(0xFFF0F0F3),
         child: Column(
           children: [
             // 結果表示エリア

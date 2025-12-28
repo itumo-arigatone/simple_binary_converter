@@ -16,24 +16,32 @@ class NumButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ボタンサイズに応じてフォントサイズを調整
     final fontSize = size * 0.38;
-    
-    return SizedBox(
-      width: size,
-      height: size,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          padding: EdgeInsets.zero,
-          shape: const CircleBorder(
-            side: BorderSide(
-              color: Colors.black,
-              width: 3,
+
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0F0F3),
+          shape: BoxShape.circle,
+          boxShadow: [
+            // 右下の影（暗い）
+            BoxShadow(
+              color: Colors.grey.shade400,
+              offset: const Offset(4, 4),
+              blurRadius: 8,
+              spreadRadius: 1,
             ),
-          ),
+            // 左上の影（明るい）
+            const BoxShadow(
+              color: Colors.white,
+              offset: Offset(-4, -4),
+              blurRadius: 8,
+              spreadRadius: 1,
+            ),
+          ],
         ),
         child: Center(
           child: Text(
@@ -41,7 +49,8 @@ class NumButton extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: fontSize,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade700,
             ),
           ),
         ),
@@ -66,30 +75,39 @@ class LargeNumButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(45),
-            side: const BorderSide(
-              width: 3,
-              color: Colors.black,
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0F0F3),
+          borderRadius: BorderRadius.circular(40),
+          boxShadow: [
+            // 右下の影（暗い）
+            BoxShadow(
+              color: Colors.grey.shade400,
+              offset: const Offset(6, 6),
+              blurRadius: 12,
+              spreadRadius: 1,
             ),
-          ),
+            // 左上の影（明るい）
+            const BoxShadow(
+              color: Colors.white,
+              offset: Offset(-6, -6),
+              blurRadius: 12,
+              spreadRadius: 1,
+            ),
+          ],
         ),
         child: Center(
           child: Text(
             label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 35,
-              fontWeight: FontWeight.w500,
+            style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade700,
             ),
           ),
         ),
