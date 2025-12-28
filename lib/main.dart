@@ -1,13 +1,10 @@
 import "package:flutter/material.dart";
-import "dart:math";
 import 'package:flutter/services.dart';
 import 'package:simple_binary_converter/keypad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:simple_binary_converter/copy_button.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // ステータスバーの上部の変な半透明を消す
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
@@ -18,127 +15,108 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Simple binary converter",
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: const MyHomePage(title: "Simple binary converter"),
+      home: const ConverterPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
+// 変換ロジック
 class Calculation {
-  // 2 -> 16
-  String convertBinaryToHex(binary) {
+  String convertBinaryToHex(String binary) {
+    if (binary.isEmpty) return "0";
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
-    List<String> numArray = removeZero.split("");
-    num deci = 0;
-    for (int i = 0; i < numArray.length; i++) {
-      deci += int.parse(numArray[i]) * pow(2, (numArray.length - i - 1));
-    }
-    deci as int;
-    return deci.toRadixString(16);
+    if (removeZero.isEmpty) return "0";
+    BigInt deci = BigInt.parse(removeZero, radix: 2);
+    return deci.toRadixString(16).toUpperCase();
   }
 
-  // 2 -> 10
-  String convertBinaryToDecimal(binary) {
+  String convertBinaryToDecimal(String binary) {
+    if (binary.isEmpty) return "0";
     String removeZero = binary.replaceAll(RegExp(r"^0*"), "");
-    List<String> numArray = removeZero.split("");
-    num deci = 0;
-    for (int i = 0; i < numArray.length; i++) {
-      deci += int.parse(numArray[i]) * pow(2, (numArray.length - i - 1));
-    }
-    deci as int;
+    if (removeZero.isEmpty) return "0";
+    BigInt deci = BigInt.parse(removeZero, radix: 2);
     return deci.toRadixString(10);
   }
 
-  //10 -> 2
-  String convertDecimalToBinary(number) {
-    int num = number == "" ? 0 : int.parse(number);
+  String convertDecimalToBinary(String number) {
+    if (number.isEmpty) return "0";
+    BigInt num = BigInt.parse(number);
     return num.toRadixString(2);
   }
 
-  //10->16
-  String convertDecimalToHex(number) {
-    int num = number == "" ? 0 : int.parse(number);
-    return num.toRadixString(16);
+  String convertDecimalToHex(String number) {
+    if (number.isEmpty) return "0";
+    BigInt num = BigInt.parse(number);
+    return num.toRadixString(16).toUpperCase();
   }
 
-  // 16 -> 2
-  String convertHexToBinary(hex) {
-    int num = hex == "" ? 0 : int.parse("0x" + hex);
+  String convertHexToBinary(String hex) {
+    if (hex.isEmpty) return "0";
+    BigInt num = BigInt.parse(hex, radix: 16);
     return num.toRadixString(2);
   }
 
-  // 16 -> 10
-  String convertHexToDecimal(hex) {
-    int num = hex == "" ? 0 : int.parse("0x" + hex);
+  String convertHexToDecimal(String hex) {
+    if (hex.isEmpty) return "0";
+    BigInt num = BigInt.parse(hex, radix: 16);
     return num.toRadixString(10);
   }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class ConverterPage extends StatefulWidget {
+  const ConverterPage({Key? key}) : super(key: key);
+
+  @override
+  State<ConverterPage> createState() => _ConverterPageState();
+}
+
+class _ConverterPageState extends State<ConverterPage> {
   String _number = "";
   String _convertResult = "";
+  String _convertMode = "1"; // デフォルト: 2進数 -> 16進数
+  
   BannerAd? _anchoredBanner;
   bool _loadingAnchoredBanner = false;
-  static const AdRequest request = AdRequest();
 
-  /*
-  convertMode
-  0: 2  -> 10
-  1: 2  -> 16
-  2: 10 -> 2
-  3: 10 -> 16
-  4: 16 -> 2
-  5: 16 -> 10
-  */
-  String _convertMode = "1";
+  final Calculation _calculation = Calculation();
+  final PageController _pageController = PageController(initialPage: 0);
 
-  Text buttonStyle(String num) {
-    return Text(
-      num,
-      style: const TextStyle(
-        fontSize: 35,
-      ),
-    );
+  // 入力桁数制限
+  static const Map<String, int> _maxDigits = {
+    "binary": 64,
+    "decimal": 32,
+    "hex": 32,
+  };
+
+  void _addInput(String input, String page) {
+    final maxLength = _maxDigits[page] ?? 32;
+    if (_number.length < maxLength) {
+      setState(() {
+        _number += input;
+      });
+    }
   }
 
-  void _handleText(String e) {
-    setState(() {
-      _number = e;
-    });
+  void _deleteLastInput() {
+    if (_number.isNotEmpty) {
+      setState(() {
+        _number = _number.substring(0, _number.length - 1);
+      });
+    }
   }
 
-  void _clearNum() {
+  void _clearInput() {
     setState(() {
       _number = "";
-    });
-  }
-
-  void _setResult(String result) {
-    setState(() {
-      _convertResult = result;
-    });
-  }
-
-  void deleteInputData(String inputData) {
-    setState(() {
-      int length = inputData.length - 1;
-      _number = length >= 0 ? inputData.substring(0, length) : _number;
+      _convertResult = "";
     });
   }
 
@@ -148,320 +126,217 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _onPageChanged(int page) {
-    if (page == 0) {
-      _setConvertMode("1");
-    } else if (page == 1) {
-      _setConvertMode("3");
-    } else {
-      _setConvertMode("5");
+  void _convert() {
+    String result;
+    switch (_convertMode) {
+      case "0":
+        result = _calculation.convertBinaryToDecimal(_number);
+        break;
+      case "1":
+        result = _calculation.convertBinaryToHex(_number);
+        break;
+      case "2":
+        result = _calculation.convertDecimalToBinary(_number);
+        break;
+      case "3":
+        result = _calculation.convertDecimalToHex(_number);
+        break;
+      case "4":
+        result = _calculation.convertHexToBinary(_number);
+        break;
+      case "5":
+        result = _calculation.convertHexToDecimal(_number);
+        break;
+      default:
+        result = "0";
     }
-    _clearNum();
+    setState(() {
+      _convertResult = result;
+    });
+  }
+
+  void _onPageChanged(int page) {
+    final defaultModes = ["1", "3", "5"];
+    _setConvertMode(defaultModes[page]);
+    _clearInput();
+  }
+
+  void _copyToClipboard() {
+    if (_convertResult.isNotEmpty) {
+      Clipboard.setData(ClipboardData(text: _convertResult));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Copied!"),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   Future<void> _createAnchoredBanner(BuildContext context) async {
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getAnchoredAdaptiveBannerAdSize(
+    final size = await AdSize.getAnchoredAdaptiveBannerAdSize(
       Orientation.portrait,
       MediaQuery.of(context).size.width.truncate(),
     );
 
-    if (size == null) {
-      print('Unable to get height of anchored banner.');
-      return;
-    }
+    if (size == null) return;
 
-    final BannerAd banner = BannerAd(
+    final banner = BannerAd(
       size: size,
-      request: request,
+      request: const AdRequest(),
       adUnitId: 'ca-app-pub-3940256099942544/6300978111',
       listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          print('$BannerAd loaded.');
+        onAdLoaded: (ad) {
           setState(() {
-            _anchoredBanner = ad as BannerAd?;
+            _anchoredBanner = ad as BannerAd;
           });
         },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          print('$BannerAd failedToLoad: $error');
+        onAdFailedToLoad: (ad, error) {
           ad.dispose();
         },
-        onAdOpened: (Ad ad) => print('$BannerAd onAdOpened.'),
-        onAdClosed: (Ad ad) => print('$BannerAd onAdClosed.'),
       ),
     );
-    return banner.load();
+    banner.load();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _anchoredBanner?.dispose();
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    void setInputData(String inputData, String page) {
-      if (_number.length >= 32 && page == "binary") {
-        // show message
-      } else if (_number.length >= 18 && page == "decimal") {
-        // show message
-      } else if (_number.length >= 15 && page == "hex") {
-        // show message
-      } else {
-        setState(() {
-          _number += inputData;
-        });
-      }
+    if (!_loadingAnchoredBanner) {
+      _loadingAnchoredBanner = true;
+      _createAnchoredBanner(context);
     }
 
-    BinaryKeyPad binaryKeypad = BinaryKeyPad(setInputData, _setConvertMode);
-    DecimalKeyPad decimalKeypad = DecimalKeyPad(setInputData, _setConvertMode);
-    HexKeyPad hexKeypad = HexKeyPad(setInputData, _setConvertMode);
-    Calculation calculation = Calculation();
-    final PageController controller = PageController(initialPage: 0);
-    CopyButton copyButton = CopyButton();
-
-    return MaterialApp(
-      home: Builder(builder: (BuildContext context) {
-        if (!_loadingAnchoredBanner) {
-          _loadingAnchoredBanner = true;
-          _createAnchoredBanner(context);
-        }
-        return Column(
-          children: <Widget>[
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            // 広告バナー
             if (_anchoredBanner != null)
-              Container(
-                  color: Colors.white,
-                  width: _anchoredBanner!.size.width.toDouble(),
-                  height: _anchoredBanner!.size.height.toDouble() + 40,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: AdWidget(ad: _anchoredBanner!),
-                  )),
+              SizedBox(
+                width: _anchoredBanner!.size.width.toDouble(),
+                height: _anchoredBanner!.size.height.toDouble(),
+                child: AdWidget(ad: _anchoredBanner!),
+              ),
+            
+            // メインコンテンツ
             Expanded(
               child: PageView(
+                controller: _pageController,
                 onPageChanged: _onPageChanged,
-                scrollDirection: Axis.horizontal,
-                controller: controller,
-                children: <Widget>[
-                  Scaffold(
-                    body: Dismissible(
-                      key: const Key('key'),
-                      direction: DismissDirection.vertical,
-                      confirmDismiss: (direction) async {
-                        if (direction == DismissDirection.up) {
-                          _clearNum();
-                        } else {
-                          if (_convertMode == "0") {
-                            _setResult(
-                                calculation.convertBinaryToDecimal(_number));
-                          } else if (_convertMode == "1") {
-                            _setResult(calculation.convertBinaryToHex(_number));
-                          }
-                        }
-                        return;
-                      },
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(top: 40),
-                            child: SizedBox(
-                              height: 100,
-                              child: Row(children: <Widget>[
-                                Expanded(
-                                    flex: 9,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        _convertResult,
-                                        style: const TextStyle(
-                                          fontSize: 30,
-                                        ),
-                                      ),
-                                    )),
-                                Expanded(
-                                  flex: 1,
-                                  child: copyButton.copyButton(_convertResult),
-                                ),
-                              ]),
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.only(top: 30)),
-                          SizedBox(
-                            width: 350,
-                            child: Row(children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  enabled: false,
-                                  onChanged: _handleText,
-                                  controller: TextEditingController(
-                                    text: _number,
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.backspace_outlined),
-                                onPressed: () => deleteInputData(_number),
-                              ),
-                            ]),
-                          ),
-                          Expanded(
-                            child: FractionallySizedBox(
-                              widthFactor: 1.0,
-                              heightFactor: 0.8,
-                              alignment: const FractionalOffset(0.5, 0.4),
-                              child: binaryKeypad,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                children: [
+                  _buildConverterPanel(
+                    keypad: BinaryKeyPad(_addInput, _setConvertMode),
                   ),
-                  Scaffold(
-                    body: Dismissible(
-                      key: const Key('key2'),
-                      direction: DismissDirection.vertical,
-                      confirmDismiss: (direction) async {
-                        if (direction == DismissDirection.up) {
-                          _clearNum();
-                        } else {
-                          if (_convertMode == "2") {
-                            _setResult(
-                                calculation.convertDecimalToBinary(_number));
-                          } else if (_convertMode == "3") {
-                            _setResult(
-                                calculation.convertDecimalToHex(_number));
-                          }
-                        }
-                        return;
-                      },
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 100,
-                            child: Row(children: <Widget>[
-                              Expanded(
-                                  flex: 9,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      _convertResult,
-                                      style: const TextStyle(fontSize: 30),
-                                    ),
-                                  )),
-                              Expanded(
-                                flex: 1,
-                                child: copyButton.copyButton(_convertResult),
-                              ),
-                            ]),
-                          ),
-                          SizedBox(
-                            width: 350,
-                            child: Row(children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  enabled: false,
-                                  onChanged: _handleText,
-                                  controller: TextEditingController(
-                                    text: _number,
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.backspace_outlined),
-                                onPressed: () => deleteInputData(_number),
-                              ),
-                            ]),
-                          ),
-                          Expanded(
-                            child: FractionallySizedBox(
-                              widthFactor: 1.0,
-                              heightFactor: 0.72,
-                              alignment: const FractionalOffset(0.5, 0.7),
-                              child: decimalKeypad,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  _buildConverterPanel(
+                    keypad: DecimalKeyPad(_addInput, _setConvertMode),
                   ),
-                  Scaffold(
-                    body: Dismissible(
-                      key: const Key('key3'),
-                      direction: DismissDirection.vertical,
-                      confirmDismiss: (direction) async {
-                        if (direction == DismissDirection.up) {
-                          _clearNum();
-                        } else {
-                          if (_convertMode == "4") {
-                            _setResult(calculation.convertHexToBinary(_number));
-                          } else if (_convertMode == "5") {
-                            _setResult(
-                                calculation.convertHexToDecimal(_number));
-                          }
-                        }
-                        return;
-                      },
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 100,
-                            child: Row(children: <Widget>[
-                              Expanded(
-                                  flex: 9,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      _convertResult,
-                                      style: const TextStyle(fontSize: 30),
-                                    ),
-                                  )),
-                              Expanded(
-                                flex: 1,
-                                child: copyButton.copyButton(_convertResult),
-                              ),
-                            ]),
-                          ),
-                          SizedBox(
-                            width: 350,
-                            child: Row(children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  enabled: false,
-                                  onChanged: _handleText,
-                                  controller: TextEditingController(
-                                    text: _number,
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.backspace_outlined),
-                                onPressed: () => deleteInputData(_number),
-                              ),
-                            ]),
-                          ),
-                          Expanded(
-                            child: FractionallySizedBox(
-                              widthFactor: 1.0,
-                              heightFactor: 1.0,
-                              // alignment: const FractionalOffset(0.5, 0.7),
-                              child: hexKeypad,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  _buildConverterPanel(
+                    keypad: HexKeyPad(_addInput, _setConvertMode),
                   ),
                 ],
               ),
-            )
+            ),
           ],
-        );
-      }),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildConverterPanel({required Widget keypad}) {
+    return GestureDetector(
+      onVerticalDragEnd: (details) {
+        if (details.primaryVelocity != null) {
+          if (details.primaryVelocity! < 0) {
+            // 上スワイプ: クリア
+            _clearInput();
+          } else if (details.primaryVelocity! > 0) {
+            // 下スワイプ: 変換
+            _convert();
+          }
+        }
+      },
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            // 結果表示エリア
+            _buildResultArea(),
+            
+            // 入力表示エリア
+            _buildInputArea(),
+            
+            // キーパッド
+            Expanded(
+              child: Center(child: keypad),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResultArea() {
+    return Container(
+      height: 80,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          Expanded(
+            child: Center(
+              child: Text(
+                _convertResult,
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.content_copy),
+            onPressed: _copyToClipboard,
+            tooltip: "Copy",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputArea() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey),
+                ),
+              ),
+              child: Text(
+                _number.isEmpty ? " " : _number,
+                style: const TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.backspace_outlined),
+            onPressed: _deleteLastInput,
+            tooltip: "Delete",
+          ),
+        ],
+      ),
     );
   }
 }
