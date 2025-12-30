@@ -91,6 +91,7 @@ class _ConverterPageState extends State<ConverterPage> {
 
   // 履歴
   List<HistoryItem> _history = [];
+  bool _restoringFromHistory = false;
 
   final Calculation _calculation = Calculation();
   final PageController _pageController = PageController(initialPage: 0);
@@ -206,6 +207,9 @@ class _ConverterPageState extends State<ConverterPage> {
     final pageIndex = HistoryItem.getPageIndex(item.type);
     
     if (convertMode != null) {
+      // ページ切り替え時のクリアをスキップするフラグ
+      _restoringFromHistory = true;
+      
       setState(() {
         _number = item.input;
         _convertMode = convertMode;
@@ -244,6 +248,11 @@ class _ConverterPageState extends State<ConverterPage> {
   }
 
   void _onPageChanged(int page) {
+    // 履歴から復元中はクリアしない
+    if (_restoringFromHistory) {
+      _restoringFromHistory = false;
+      return;
+    }
     final defaultModes = ["1", "3", "5"];
     _setConvertMode(defaultModes[page]);
     _clearInput();
