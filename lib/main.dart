@@ -2,6 +2,9 @@ import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:simple_binary_converter/keypad.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:simple_binary_converter/history/history_model.dart';
+import 'package:simple_binary_converter/history/history_service.dart';
+import 'package:simple_binary_converter/history/history_modal.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,8 +89,25 @@ class _ConverterPageState extends State<ConverterPage> {
   BannerAd? _anchoredBanner;
   bool _loadingAnchoredBanner = false;
 
+  // 履歴
+  List<HistoryItem> _history = [];
+  bool _restoringFromHistory = false;
+
   final Calculation _calculation = Calculation();
   final PageController _pageController = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
+
+  Future<void> _loadHistory() async {
+    final history = await HistoryService.loadHistory();
+    setState(() {
+      _history = history;
+    });
+  }
 
   // 入力桁数制限
   static const Map<String, int> _maxDigits = {
@@ -127,6 +147,8 @@ class _ConverterPageState extends State<ConverterPage> {
   }
 
   void _convert() {
+    if (_number.isEmpty) return;
+    
     String result;
     switch (_convertMode) {
       case "0":
@@ -153,9 +175,84 @@ class _ConverterPageState extends State<ConverterPage> {
     setState(() {
       _convertResult = result;
     });
+    
+    // 履歴に追加
+    _addToHistory(result);
+  }
+
+  Future<void> _addToHistory(String result) async {
+    final newHistory = await HistoryService.addHistory(
+      input: _number,
+      result: result,
+      convertMode: _convertMode,
+      currentHistory: _history,
+    );
+    setState(() {
+      _history = newHistory;
+    });
+  }
+
+  void _showHistory() {
+    showHistoryModal(
+      context: context,
+      history: _history,
+      onItemTap: _onHistoryItemTap,
+      onItemDelete: _onHistoryItemDelete,
+      onClearAll: _onHistoryClearAll,
+    );
+  }
+
+  void _onHistoryItemTap(HistoryItem item) {
+    final convertMode = HistoryItem.getConvertMode(item.type);
+    final pageIndex = HistoryItem.getPageIndex(item.type);
+    
+    if (convertMode != null) {
+      // ページ切り替え時のクリアをスキップするフラグ
+      _restoringFromHistory = true;
+      
+      setState(() {
+        _number = item.input;
+        _convertMode = convertMode;
+        _convertResult = item.result;
+      });
+      
+      // ページを切り替え
+      _pageController.jumpToPage(pageIndex);
+      
+      // 結果をクリップボードにコピー
+      Clipboard.setData(ClipboardData(text: item.result));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Copied!"),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
+  }
+
+  Future<void> _onHistoryItemDelete(int index) async {
+    final newHistory = await HistoryService.removeHistory(
+      index: index,
+      currentHistory: _history,
+    );
+    setState(() {
+      _history = newHistory;
+    });
+  }
+
+  Future<void> _onHistoryClearAll() async {
+    final newHistory = await HistoryService.clearHistory();
+    setState(() {
+      _history = newHistory;
+    });
   }
 
   void _onPageChanged(int page) {
+    // 履歴から復元中はクリアしない
+    if (_restoringFromHistory) {
+      _restoringFromHistory = false;
+      return;
+    }
     final defaultModes = ["1", "3", "5"];
     _setConvertMode(defaultModes[page]);
     _clearInput();
@@ -292,15 +389,27 @@ class _ConverterPageState extends State<ConverterPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
+          // 履歴ボタン
+          IconButton(
+            icon: Icon(
+              Icons.history,
+              color: _history.isNotEmpty ? Colors.grey.shade600 : Colors.grey.shade300,
+            ),
+            onPressed: _showHistory,
+            tooltip: "History",
+          ),
           Expanded(
-            child: Center(
-              child: Text(
-                _convertResult,
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
+            child: GestureDetector(
+              onTap: _showHistory,
+              child: Center(
+                child: Text(
+                  _convertResult,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
           ),
