@@ -214,6 +214,15 @@ class _ConverterPageState extends State<ConverterPage> {
       
       // ページを切り替え
       _pageController.jumpToPage(pageIndex);
+      
+      // 結果をクリップボードにコピー
+      Clipboard.setData(ClipboardData(text: item.result));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Copied!"),
+          duration: Duration(seconds: 1),
+        ),
+      );
     }
   }
 
